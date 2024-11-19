@@ -1,4 +1,6 @@
 from codetocad.interfaces.part_interface import PartInterface
+from typing import Self
+from codetocad.interfaces.sketch_interface import SketchInterface
 from codetocad.utilities.supported import supported
 from codetocad.enums.support_level import SupportLevel
 from codetocad.interfaces.booleanable_interface import BooleanableInterface
@@ -203,9 +205,10 @@ class Part(PartInterface, Entity):
         part_name = other
         if isinstance(part_name, EntityInterface):
             part_name = part_name.name
-        assert (
-            self.is_colliding_with_part(part_name) is True
-        ), "Parts must be colliding to be unioned."
+        # TODO: add a flag for collision detection
+        # assert (
+        #     self.is_colliding_with_part(part_name) is True
+        # ), "Parts must be colliding to be unioned."
         apply_boolean_modifier(self.name, BlenderBooleanTypes.UNION, part_name)
         if is_transfer_data:
             transfer_landmarks(part_name, self.name)
@@ -738,3 +741,52 @@ class Part(PartInterface, Entity):
     @supported(SupportLevel.SUPPORTED)
     def get_landmark(self, landmark_name: "str|PresetLandmark") -> "LandmarkInterface":
         return implementables.get_landmark(self, landmark_name)
+
+    @supported(SupportLevel.SUPPORTED, notes="")
+    def create_text(
+        self,
+        text: "str",
+        extrude_amount: "str|float|Dimension",
+        font_size: "str|float|Dimension" = 1.0,
+        bold: "bool" = False,
+        italic: "bool" = False,
+        underlined: "bool" = False,
+        character_spacing: "int" = 1,
+        word_spacing: "int" = 1,
+        line_spacing: "int" = 1,
+        font_file_path: "str| None" = None,
+        profile_curve_name: "str|WireInterface|SketchInterface| None" = None,
+        options: "PartOptions| None" = None,
+    ) -> Self:
+        if not options:
+            options = PartOptions()
+        sketch = Sketch(self.name + "_" + create_uuid_like_id()).create_text(
+            text=text,
+            font_size=font_size,
+            bold=bold,
+            italic=italic,
+            underlined=underlined,
+            character_spacing=character_spacing,
+            word_spacing=word_spacing,
+            line_spacing=line_spacing,
+            font_file_path=font_file_path,
+            profile_curve_name=profile_curve_name,
+            options=SketchOptions(
+                rotation_x=options.rotation_x,
+                rotation_y=options.rotation_y,
+                rotation_z=options.rotation_z,
+            ),
+        )
+
+        wires = sketch.get_wires()
+
+        part = wires[0].extrude(extrude_amount)
+
+        for wireIndex in range(1, len(wires)):
+            part.union(wires[wireIndex].extrude(extrude_amount))
+
+        part.rename(self.name)
+
+        sketch.delete()
+
+        return self

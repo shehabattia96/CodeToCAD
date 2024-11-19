@@ -13,6 +13,9 @@ from codetocad.interfaces.vertex_interface import VertexInterface
 from codetocad.interfaces.landmark_interface import LandmarkInterface
 from codetocad.interfaces.projectable_interface import ProjectableInterface
 from codetocad.utilities import create_uuid_like_id
+from providers.blender.blender_provider.blender_actions.modifiers import (
+    apply_curve_modifier,
+)
 from providers.blender.blender_provider.blender_definitions import (
     BlenderCurveTypes,
     BlenderLength,
@@ -82,7 +85,8 @@ class Sketch(SketchInterface, Entity):
         return self
 
     @supported(
-        SupportLevel.PARTIAL, notes="Options, center_at parameters are not supported."
+        SupportLevel.PARTIAL,
+        notes="Options, center_at parameters are not supported.",
     )
     def create_text(
         self,
@@ -96,6 +100,7 @@ class Sketch(SketchInterface, Entity):
         line_spacing: "int" = 1,
         font_file_path: "str| None" = None,
         center_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = None,
+        profile_curve_name: "str|WireInterface|SketchInterface| None" = None,
         options: "SketchOptions| None" = None,
     ):
         size = Dimension.from_string(font_size)
@@ -111,6 +116,12 @@ class Sketch(SketchInterface, Entity):
             line_spacing,
             font_file_path,
         )
+
+        if profile_curve_name:
+            if isinstance(profile_curve_name, EntityInterface):
+                profile_curve_name = profile_curve_name.name
+            apply_curve_modifier(self.name, profile_curve_name)
+
         update_view_layer()
         return self
 
@@ -143,7 +154,11 @@ class Sketch(SketchInterface, Entity):
         for index, vertex in enumerate(wire.get_vertices()):
             point = points[index]
             if isinstance(point, VertexInterface):
-                vertex.set_control_points(point.get_control_points())
+                control_points = point.get_control_points()
+                if len(control_points) < 2:
+                    # TODO: add a warning message to a logger
+                    continue
+                vertex.set_control_points(control_points)
         merge_touching_splines(curve=curve_data, reference_spline_index=0)
         if is_closed:
             blender_spline.use_cyclic_u = True
