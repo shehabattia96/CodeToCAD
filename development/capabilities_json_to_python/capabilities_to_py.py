@@ -74,6 +74,9 @@ def generate_all_templates(
     for template_args in templates_to_generate:
         print("Generating", template_args.template_path)
 
+        from pathlib import Path
+        Path(template_args.output_folder_path).mkdir(parents=True, exist_ok=True)
+        
         if template_args.generate_init_file_imports:
             class_names = capabilities_loader.all_class_names
             if (

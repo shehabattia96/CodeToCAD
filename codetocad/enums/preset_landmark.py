@@ -67,5 +67,6 @@ class PresetLandmark(Enum):
             Axis.MIN
             if self.contains(PresetLandmark.bottom)
             else Axis.MAX if self.contains(PresetLandmark.top) else Axis.CENTER
+            
         )
         return (x, y, z)

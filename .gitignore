@@ -17,3 +17,10 @@ version.txt
 .idea
 
 
+// These are auto-generated folders, so we do not want to track them
+codetocad/factory
+codetocad/interfaces
+codetocad/proxy
+codetocad/tests_interfaces
+providers/sample
+tests/test_providers/sample
