@@ -59,3 +59,7 @@ CodeToCAD is an automation. Here is the high-level architecture for this tool.
 If you would like to contribute to the project, please feel free to submit a PR.
 
 Please join the Discord Server if you have any questions or suggestions: [https://discord.gg/MnZEtqwt74](https://discord.gg/MnZEtqwt74)
+
+## Auto-generating Files
+
+To set up your local development environment, you can run the following script to automatically generate necessary files:

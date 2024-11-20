@@ -23,4 +23,4 @@ codetocad/interfaces
 codetocad/proxy
 codetocad/tests_interfaces
 providers/sample
-tests/test_providers/sample
+tests/test_providers/sample/
