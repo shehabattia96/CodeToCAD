@@ -40,7 +40,7 @@ jobs:
     - name: Auto Generate Files
       run: |
         . "development/dev_virtual_environment/bin/activate"
-        python development/auto_generate_files.sh
+        sh development/auto_generate_files.sh
 
     - name: Generate docs
       run: |
