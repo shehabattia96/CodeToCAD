@@ -65,6 +65,10 @@ jobs:
             body: "[PYPI Release](https://pypi.org/project/CodeToCAD/${{ steps.new_tag.outputs.TAG }}/)"
             draft: false
             prerelease: true
+        - name: Auto Generate Files
+          run: |
+            . "development/dev_virtual_environment/bin/activate"
+            python development/auto_generate_files.sh
         - name: Build Blender Addon Zip File
           run: bash ./development/create_blender_addon.sh
         - name: Upload provider bundles to release
