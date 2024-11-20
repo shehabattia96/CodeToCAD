@@ -73,19 +73,16 @@ class Vertex(VertexInterface, Entity):
         y: "str|float|Dimension",
         z: "str|float|Dimension",
     ) -> Self:
-
         x = Dimension.from_dimension_or_its_float_or_string_value(x)
         x = BlenderLength.convert_dimension_to_blender_unit(x)
         y = Dimension.from_dimension_or_its_float_or_string_value(y)
         y = BlenderLength.convert_dimension_to_blender_unit(y)
         z = Dimension.from_dimension_or_its_float_or_string_value(z)
         z = BlenderLength.convert_dimension_to_blender_unit(z)
-
         native_instance = self.get_native_instance()
         native_instance.co.x += x.value
         native_instance.co.y += y.value
         native_instance.co.z += z.value
-
         control_points = self.get_control_points()
         if len(control_points) >= 2:
             for index in range(len(control_points)):
@@ -94,27 +91,22 @@ class Vertex(VertexInterface, Entity):
                 point.y += y
                 point.z += z
                 control_points[index] = point
-
             self.set_control_points(control_points)
-
         return self
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_x(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(amount, 0, 0)
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_y(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(0, amount, 0)
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_z(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(0, 0, amount)
 
     @override

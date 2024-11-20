@@ -131,28 +131,23 @@ class Edge(EdgeInterface, Entity):
         y: "str|float|Dimension",
         z: "str|float|Dimension",
     ) -> Self:
-
         self.v1.translate_xyz(x, y, z)
         self.v2.translate_xyz(x, y, z)
-
         return self
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_x(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(amount, 0, 0)
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_y(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(0, amount, 0)
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_z(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(0, 0, amount)
 
     @override

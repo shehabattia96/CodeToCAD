@@ -222,16 +222,13 @@ class Wire(WireInterface, Entity):
     def create_from_vertices(
         self,
         points: "list[str|list[str]|list[float]|list[Dimension]|Point|VertexInterface]",
-        options: "SketchOptions| None" = None,
     ) -> Self:
         raise NotImplementedError()
         return self
 
     @supported(SupportLevel.PLANNED)
     def create_point(
-        self,
-        point: "str|list[str]|list[float]|list[Dimension]|Point",
-        options: "SketchOptions| None" = None,
+        self, point: "str|list[str]|list[float]|list[Dimension]|Point"
     ) -> Self:
         raise NotImplementedError()
         return self
@@ -242,7 +239,6 @@ class Wire(WireInterface, Entity):
         length: "str|float|Dimension",
         angle: "str|float|Angle",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
-        options: "SketchOptions| None" = None,
     ) -> Self:
         raise NotImplementedError()
         return self
@@ -252,7 +248,6 @@ class Wire(WireInterface, Entity):
         self,
         to: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
-        options: "SketchOptions| None" = None,
     ) -> Self:
         raise NotImplementedError()
         return self
@@ -264,7 +259,6 @@ class Wire(WireInterface, Entity):
         radius: "str|float|Dimension",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
         flip: "bool| None" = False,
-        options: "SketchOptions| None" = None,
     ) -> Self:
         raise NotImplementedError()
         return self

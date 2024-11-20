@@ -1,5 +1,9 @@
 SCRIPT_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )" # copypasta from https://stackoverflow.com/a/4774063/
 
+source "$SCRIPT_DIR/../development/dev_virtual_environment/bin/activate"
+
+sh "$SCRIPT_DIR/auto_generate_files.sh"
+
 cd "$SCRIPT_DIR/.."
 
 python -m development.update_provider -p Blender -w
@@ -13,3 +17,5 @@ if code -v &> /dev/null; then
 fi
 
 sh "$SCRIPT_DIR/run_lint.sh" --autofix
+
+deactivate
