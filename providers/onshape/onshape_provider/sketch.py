@@ -156,7 +156,6 @@ class Sketch(SketchInterface, Entity):
         font_file_path: "str| None" = None,
         center_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = None,
         profile_curve_name: "str|WireInterface|SketchInterface| None" = None,
-        options: "SketchOptions| None" = None,
     ):
         pointLocation1 = Dimension(0.0, "mm")
         pointLocation2 = Dimension(0.2, "mm")
@@ -180,15 +179,12 @@ class Sketch(SketchInterface, Entity):
     def create_from_vertices(
         self,
         points: "list[str|list[str]|list[float]|list[Dimension]|Point|VertexInterface]",
-        options: "SketchOptions| None" = None,
     ) -> "Wire":
         raise NotImplementedError()
 
     @supported(SupportLevel.UNSUPPORTED)
     def create_point(
-        self,
-        point: "str|list[str]|list[float]|list[Dimension]|Point",
-        options: "SketchOptions| None" = None,
+        self, point: "str|list[str]|list[float]|list[Dimension]|Point"
     ) -> "Vertex":
         point = Point.from_list_of_float_or_string(point)
         api_resp = onshape_actions.create_point(
@@ -205,7 +201,6 @@ class Sketch(SketchInterface, Entity):
         length: "str|float|Dimension",
         angle: "str|float|Angle",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
-        options: "SketchOptions| None" = None,
     ) -> "Edge":
         start_point = Point.from_list_of_float_or_string(start_at)
         end_point = Point.from_list_of_float_or_string(end_at)
@@ -225,7 +220,6 @@ class Sketch(SketchInterface, Entity):
         self,
         radius: "str|float|Dimension",
         center_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = None,
-        options: "SketchOptions| None" = None,
     ) -> "Wire":
         radius_float = Dimension.from_dimension_or_its_float_or_string_value(radius)
         api_resp = onshape_actions.create_circle(
@@ -240,7 +234,6 @@ class Sketch(SketchInterface, Entity):
         radius_minor: "str|float|Dimension",
         radius_major: "str|float|Dimension",
         center_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = None,
-        options: "SketchOptions| None" = None,
     ) -> "Wire":
         radius_minor_float = Dimension.from_dimension_or_its_float_or_string_value(
             radius_minor
@@ -265,7 +258,6 @@ class Sketch(SketchInterface, Entity):
         radius: "str|float|Dimension",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
         flip: "bool| None" = False,
-        options: "SketchOptions| None" = None,
     ) -> "Wire":
         start_point = Point.from_list_of_float_or_string(start_at)
         end_point = Point.from_list_of_float_or_string(end_at)
@@ -288,7 +280,6 @@ class Sketch(SketchInterface, Entity):
         length: "str|float|Dimension",
         width: "str|float|Dimension",
         center_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = None,
-        options: "SketchOptions| None" = None,
     ) -> "Wire":
         length_float = Dimension.from_dimension_or_its_float_or_string_value(
             length, None
@@ -326,7 +317,6 @@ class Sketch(SketchInterface, Entity):
         length: "str|float|Dimension",
         width: "str|float|Dimension",
         center_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = None,
-        options: "SketchOptions| None" = None,
     ) -> "Wire":
         points = get_polygon_points(number_of_sides, length)
         new_points: list[Point] = []
@@ -351,7 +341,6 @@ class Sketch(SketchInterface, Entity):
         length_lower: "str|float|Dimension",
         height: "str|float|Dimension",
         center_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = None,
-        options: "SketchOptions| None" = None,
     ) -> "Wire":
         api_resp = onshape_actions.create_trapezoid(
             self.client, self.onshape_url, self.name, length_upper, length_lower, height
@@ -368,7 +357,6 @@ class Sketch(SketchInterface, Entity):
         is_clockwise: "bool" = True,
         radius_end: "str|float|Dimension| None" = None,
         center_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = None,
-        options: "SketchOptions| None" = None,
     ) -> "Wire":
         if self.native_instance is None:
             raise ValueError("Native Instance is None")
@@ -433,7 +421,6 @@ class Sketch(SketchInterface, Entity):
         self,
         to: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
-        options: "SketchOptions| None" = None,
     ) -> "WireInterface":
         print("create_line_to called", f": {to}, {start_at}, {options}")
         return Wire(

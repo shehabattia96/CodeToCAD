@@ -310,14 +310,11 @@ class Wire(WireInterface, Entity):
         temp_sketch_1 = Sketch(parent.name + create_uuid_like_id())
         temp_sketch_1.project(self)
         temp_sketch_1.translate_xyz(*projected_normal)
-
         wire_name = parent.name + "_" + self.name
         temp_sketch_2 = Sketch(wire_name)
         temp_sketch_2.project(self)
-
         part = temp_sketch_2.get_wires()[0].loft(temp_sketch_1.get_wires()[0])
         part.description = self.description
-
         return part
 
     @supported(SupportLevel.SUPPORTED, notes="Sweep the wire")
@@ -383,7 +380,6 @@ class Wire(WireInterface, Entity):
     def create_from_vertices(
         self,
         points: "list[str|list[str]|list[float]|list[Dimension]|Point|VertexInterface]",
-        options: "SketchOptions| None" = None,
     ) -> Self:
         raise NotImplementedError()
         print("create_from_vertices called", f": {points}, {options}")
@@ -391,9 +387,7 @@ class Wire(WireInterface, Entity):
 
     @supported(SupportLevel.PLANNED)
     def create_point(
-        self,
-        point: "str|list[str]|list[float]|list[Dimension]|Point",
-        options: "SketchOptions| None" = None,
+        self, point: "str|list[str]|list[float]|list[Dimension]|Point"
     ) -> Self:
         raise NotImplementedError()
         print("create_point called", f": {point}, {options}")
@@ -405,7 +399,6 @@ class Wire(WireInterface, Entity):
         length: "str|float|Dimension",
         angle: "str|float|Angle",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
-        options: "SketchOptions| None" = None,
     ) -> Self:
         raise NotImplementedError()
         print("create_line called", f": {length}, {angle}, {start_at}, {options}")
@@ -416,7 +409,6 @@ class Wire(WireInterface, Entity):
         self,
         to: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
-        options: "SketchOptions| None" = None,
     ) -> Self:
         raise NotImplementedError()
         print("create_line_to called", f": {to}, {start_at}, {options}")
@@ -429,7 +421,6 @@ class Wire(WireInterface, Entity):
         radius: "str|float|Dimension",
         start_at: "str|list[str]|list[float]|list[Dimension]|Point|VertexInterface|LandmarkInterface|PresetLandmark| None" = "PresetLandmark.end",
         flip: "bool| None" = False,
-        options: "SketchOptions| None" = None,
     ) -> Self:
         raise NotImplementedError()
         print(
@@ -445,28 +436,23 @@ class Wire(WireInterface, Entity):
         y: "str|float|Dimension",
         z: "str|float|Dimension",
     ) -> Self:
-
         for vertex in self.get_vertices():
             vertex.translate_xyz(x, y, z)
-
         return self
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_x(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(amount, 0, 0)
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_y(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(0, amount, 0)
 
     @override
     @supported(SupportLevel.SUPPORTED, notes="")
     def translate_z(self, amount: "str|float|Dimension") -> Self:
-
         return self.translate_xyz(0, 0, amount)
 
     @override

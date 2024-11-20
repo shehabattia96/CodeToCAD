@@ -121,7 +121,6 @@ class Part(PartInterface, Entity):
         width: "str|float|Dimension",
         length: "str|float|Dimension",
         height: "str|float|Dimension",
-        options: "PartOptions| None" = None,
     ):
         return self
 
@@ -131,32 +130,23 @@ class Part(PartInterface, Entity):
         radius: "str|float|Dimension",
         height: "str|float|Dimension",
         draft_radius: "str|float|Dimension" = 0,
-        options: "PartOptions| None" = None,
     ):
         return self
 
     @supported(SupportLevel.UNSUPPORTED)
     def create_cylinder(
-        self,
-        radius: "str|float|Dimension",
-        height: "str|float|Dimension",
-        options: "PartOptions| None" = None,
+        self, radius: "str|float|Dimension", height: "str|float|Dimension"
     ):
         return self
 
     @supported(SupportLevel.UNSUPPORTED)
     def create_torus(
-        self,
-        inner_radius: "str|float|Dimension",
-        outer_radius: "str|float|Dimension",
-        options: "PartOptions| None" = None,
+        self, inner_radius: "str|float|Dimension", outer_radius: "str|float|Dimension"
     ):
         return self
 
     @supported(SupportLevel.UNSUPPORTED)
-    def create_sphere(
-        self, radius: "str|float|Dimension", options: "PartOptions| None" = None
-    ):
+    def create_sphere(self, radius: "str|float|Dimension"):
         return self
 
     @supported(SupportLevel.UNSUPPORTED)
@@ -172,7 +162,6 @@ class Part(PartInterface, Entity):
         skew_angle: "str|float|Angle" = 0,
         conical_angle: "str|float|Angle" = 0,
         crown_angle: "str|float|Angle" = 0,
-        options: "PartOptions| None" = None,
     ):
         return self
 
@@ -359,7 +348,6 @@ class Part(PartInterface, Entity):
         line_spacing: "int" = 1,
         font_file_path: "str| None" = None,
         profile_curve_name: "str|WireInterface|SketchInterface| None" = None,
-        options: "PartOptions| None" = None,
     ) -> Self:
         print(
             "create_text called",

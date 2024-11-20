@@ -1,4 +1,5 @@
 from codetocad.interfaces.part_interface import PartInterface
+from codetocad.proxy.sketch import Sketch
 from typing import Self
 from codetocad.interfaces.sketch_interface import SketchInterface
 from codetocad.utilities.supported import supported
@@ -77,7 +78,6 @@ class Part(PartInterface, Entity):
         width: "str|float|Dimension",
         length: "str|float|Dimension",
         height: "str|float|Dimension",
-        options: "PartOptions| None" = None,
     ):
         from providers.blender.blender_provider.sketch import Sketch
 
@@ -95,7 +95,6 @@ class Part(PartInterface, Entity):
         radius: "str|float|Dimension",
         height: "str|float|Dimension",
         draft_radius: "str|float|Dimension" = 0,
-        options: "PartOptions| None" = None,
     ):
         base = Sketch(self.name).create_circle(radius)
         top = Sketch(self.name + "_temp_top")
@@ -110,10 +109,7 @@ class Part(PartInterface, Entity):
 
     @supported(SupportLevel.SUPPORTED)
     def create_cylinder(
-        self,
-        radius: "str|float|Dimension",
-        height: "str|float|Dimension",
-        options: "PartOptions| None" = None,
+        self, radius: "str|float|Dimension", height: "str|float|Dimension"
     ):
         sketch = Sketch(self.name)
         circle = sketch.create_circle(radius)
@@ -122,10 +118,7 @@ class Part(PartInterface, Entity):
 
     @supported(SupportLevel.SUPPORTED)
     def create_torus(
-        self,
-        inner_radius: "str|float|Dimension",
-        outer_radius: "str|float|Dimension",
-        options: "PartOptions| None" = None,
+        self, inner_radius: "str|float|Dimension", outer_radius: "str|float|Dimension"
     ):
         inner_radius = Dimension.from_dimension_or_its_float_or_string_value(
             inner_radius
@@ -147,9 +140,7 @@ class Part(PartInterface, Entity):
         return self
 
     @supported(SupportLevel.SUPPORTED)
-    def create_sphere(
-        self, radius: "str|float|Dimension", options: "PartOptions| None" = None
-    ):
+    def create_sphere(self, radius: "str|float|Dimension"):
         sketch = Sketch(self.name)
         circle = sketch.create_circle(radius)
         circle.revolve(180, sketch.get_landmark("center"), "x")
@@ -168,7 +159,6 @@ class Part(PartInterface, Entity):
         skew_angle: "str|float|Angle" = 0,
         conical_angle: "str|float|Angle" = 0,
         crown_angle: "str|float|Angle" = 0,
-        options: "PartOptions| None" = None,
     ):
         create_gear(
             self.name,
@@ -756,7 +746,6 @@ class Part(PartInterface, Entity):
         line_spacing: "int" = 1,
         font_file_path: "str| None" = None,
         profile_curve_name: "str|WireInterface|SketchInterface| None" = None,
-        options: "PartOptions| None" = None,
     ) -> Self:
         if not options:
             options = PartOptions()
@@ -777,16 +766,10 @@ class Part(PartInterface, Entity):
                 rotation_z=options.rotation_z,
             ),
         )
-
         wires = sketch.get_wires()
-
         part = wires[0].extrude(extrude_amount)
-
         for wireIndex in range(1, len(wires)):
             part.union(wires[wireIndex].extrude(extrude_amount))
-
         part.rename(self.name)
-
         sketch.delete()
-
         return self

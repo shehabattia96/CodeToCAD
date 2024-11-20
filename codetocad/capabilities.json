@@ -539,10 +539,6 @@
                     },
                     "height": {
                         "type": "string,float,Dimension"
-                    },
-                    "options": {
-                        "type": "PartOptions",
-                        "required": false
                     }
                 }
             },
@@ -559,10 +555,6 @@
                     "draft_radius": {
                         "type": "string,float,Dimension",
                         "default_value": 0
-                    },
-                    "options": {
-                        "type": "PartOptions",
-                        "required": false
                     }
                 }
             },
@@ -575,10 +567,6 @@
                     },
                     "height": {
                         "type": "string,float,Dimension"
-                    },
-                    "options": {
-                        "type": "PartOptions",
-                        "required": false
                     }
                 }
             },
@@ -591,10 +579,6 @@
                     },
                     "outer_radius": {
                         "type": "string,float,Dimension"
-                    },
-                    "options": {
-                        "type": "PartOptions",
-                        "required": false
                     }
                 }
             },
@@ -604,10 +588,6 @@
                 "parameters": {
                     "radius": {
                         "type": "string,float,Dimension"
-                    },
-                    "options": {
-                        "type": "PartOptions",
-                        "required": false
                     }
                 }
             },
@@ -649,10 +629,6 @@
                     "crown_angle": {
                         "type": "string,float,Angle",
                         "default_value": 0
-                    },
-                    "options": {
-                        "type": "PartOptions",
-                        "required": false
                     }
                 }
             },
@@ -701,10 +677,6 @@
                     },
                     "profile_curve_name": {
                         "type": "string,Wire,Sketch",
-                        "required": false
-                    },
-                    "options": {
-                        "type": "PartOptions",
                         "required": false
                     }
                 }
@@ -1075,10 +1047,6 @@
                     "profile_curve_name": {
                         "type": "string,Wire,Sketch",
                         "required": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1089,10 +1057,6 @@
                 "parameters": {
                     "points": {
                         "type": "list[string,list[string],list[float],list[Dimension],Point,Vertex]"
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1103,10 +1067,6 @@
                 "parameters": {
                     "point": {
                         "type": "string,list[string],list[float],list[Dimension],Point"
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1125,10 +1085,6 @@
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
                         "required": false,
                         "default_value": "PresetLandmark.end"
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1144,10 +1100,6 @@
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
                         "required": false,
                         "default_value": "PresetLandmark.end"
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1161,10 +1113,6 @@
                     },
                     "center_at": {
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
-                        "required": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
                         "required": false
                     }
                 }
@@ -1182,10 +1130,6 @@
                     },
                     "center_at": {
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
-                        "required": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
                         "required": false
                     }
                 }
@@ -1211,10 +1155,6 @@
                         "type": "boolean",
                         "required": false,
                         "default_value": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1231,10 +1171,6 @@
                     },
                     "center_at": {
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
-                        "required": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
                         "required": false
                     }
                 }
@@ -1256,10 +1192,6 @@
                     "center_at": {
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
                         "required": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1279,10 +1211,6 @@
                     },
                     "center_at": {
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
-                        "required": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
                         "required": false
                     }
                 }
@@ -1312,10 +1240,6 @@
                     },
                     "center_at": {
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
-                        "required": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
                         "required": false
                     }
                 }
@@ -1556,10 +1480,6 @@
                 "parameters": {
                     "points": {
                         "type": "list[string,list[string],list[float],list[Dimension],Point,Vertex]"
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1569,10 +1489,6 @@
                 "parameters": {
                     "point": {
                         "type": "string,list[string],list[float],list[Dimension],Point"
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1590,10 +1506,6 @@
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
                         "required": false,
                         "default_value": "PresetLandmark.end"
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1608,10 +1520,6 @@
                         "type": "string,list[string],list[float],list[Dimension],Point,Vertex,Landmark,PresetLandmark",
                         "required": false,
                         "default_value": "PresetLandmark.end"
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             },
@@ -1635,10 +1543,6 @@
                         "type": "boolean",
                         "required": false,
                         "default_value": false
-                    },
-                    "options": {
-                        "type": "SketchOptions",
-                        "required": false
                     }
                 }
             }

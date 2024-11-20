@@ -181,8 +181,7 @@ class SketchTest(TestProviderCase, SketchTestInterface):
         value = instance.create_line(
             length=Dimension(2, "mm"),
             angle=Angle(90),
-            start_at="PresetLandmark.end",
-            options=SketchOptions(),
+            start_at="PresetLandmark.end"
         )
 
         assert value, "Get method failed."
