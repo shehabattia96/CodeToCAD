@@ -328,13 +328,33 @@
     {%- endmacro %}
 
     {# MARK: Header: #}
-    <header>
+    {# <header>
         <h2 style="margin: 0;">CodeToCAD Reference Sheet</h2>
         <div>
             Repo: <a href="https://github.com/CodeToCAD/CodeToCAD">https://github.com/CodeToCAD/CodeToCAD</a></div>
         <div>
             Examples: <a
                 href="https://codetocad.github.io/CodeToCAD/examples.html">https://codetocad.github.io/CodeToCAD/examples.html</a>
+        </div>
+    </header> #}
+
+    <header>
+        <h2 style="margin: 0;">CodeToCAD Reference Sheet</h2>
+        <div>
+            Repo: <a href="https://github.com/CodeToCAD/CodeToCAD">https://github.com/CodeToCAD/CodeToCAD</a>
+        </div>
+        <div>
+            Examples: <a href="https://codetocad.github.io/CodeToCAD/examples.html">https://codetocad.github.io/CodeToCAD/examples.html</a>
+        </div>
+        <div>
+            <label for="version-select">Select Version:</label>
+            <select id="version-select" onchange="location = this.value;">
+                <option value="{{project_root_path}}/../../docs/docs.html" {% if selected_doc == 'docs/docs.html' %}selected{% endif %}>Latest Release</option>
+                <option value="{{project_root_path}}/../../docs/develop/docs.html" {% if selected_doc == 'docs/develop/docs.html' %}selected{% endif %}>Development</option>
+                {% for epoch in epochs %}
+                <option value="{{project_root_path}}/../../docs/release/{{epoch}}.html" {% if selected_doc == 'docs/release/' + epoch + '.html' %}selected{% endif %}>{{epoch}}</option>
+                {% endfor %}
+            </select>
         </div>
     </header>
 
