@@ -2,5 +2,6 @@
 
 Welcome to the CodeToCAD docs!
 
-- [Docs](./docs.html)
+- [Latest Release Documentation](./release/docs.html)
+  - [Develop/Nightly Documentation](./develop/docs.html)
 - [Examples](./examples.html)
