@@ -7,8 +7,8 @@ def get_node_tree(
     from providers.blender.blender_provider.blender_actions.scene import get_scene
 
     scene = get_scene(scene_name)
-    nodeTree = scene.world.node_tree
-    return nodeTree
+    node_tree = scene.world.node_tree
+    return node_tree
 
 
 def delete_nodes(

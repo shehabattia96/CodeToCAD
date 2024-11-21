@@ -87,7 +87,7 @@
         },
         {
             "name": "Python: Attach",
-            "type": "python",
+            "type": "debugpy",
             "request": "attach",
             "connect": {
                 "host": "localhost",

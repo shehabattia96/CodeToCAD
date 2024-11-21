@@ -16,11 +16,11 @@ def create_light(obj_name: str, energy_level, type):
 def get_light(
     light_name: str,
 ):
-    blenderLight = bpy.data.lights.get(light_name)
+    blender_light = bpy.data.lights.get(light_name)
 
-    assert blenderLight is not None, f"Light {light_name} does not exist."
+    assert blender_light is not None, f"Light {light_name} does not exist."
 
-    return blenderLight
+    return blender_light
 
 
 def set_light_color(light_name: str, r_value, g_value, b_value):

@@ -34,10 +34,10 @@ def import_file(file_path: str, file_type: Optional[str] = None) -> str:
     fileName = path.stem
 
     # Make sure an object or mesh with the same name don't already exist:
-    blenderObject = bpy.data.objects.get(fileName)
+    blender_object = bpy.data.objects.get(fileName)
     blenderMesh = bpy.data.meshes.get(fileName)
 
-    assert blenderObject is None, f"An object with name {fileName} already exists."
+    assert blender_object is None, f"An object with name {fileName} already exists."
     assert blenderMesh is None, f"A mesh with name {fileName} already exists."
 
     # Check if this is a file-type we support:
@@ -92,9 +92,9 @@ def export_object(object_name: str, file_path: str, overwrite=True, scale=1.0):
 
     bpy.ops.object.select_all(action="DESELECT")
 
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    blenderObject.select_set(True)
+    blender_object.select_set(True)
 
     # Check if this is a file-type we support:
     file_type = path.suffix.replace(".", "")

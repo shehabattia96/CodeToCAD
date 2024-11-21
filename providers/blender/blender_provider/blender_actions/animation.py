@@ -5,10 +5,10 @@ from providers.blender.blender_provider.blender_actions.scene import get_scene
 
 
 def add_keyframe_to_object(object_name: str, frame_number: int, data_path: str):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     # Acts on https://docs.blender.org/api/current/bpy.types.Keyframe.html
-    blenderObject.keyframe_insert(data_path=data_path, frame=frame_number)
+    blender_object.keyframe_insert(data_path=data_path, frame=frame_number)
 
 
 def set_frame_start(frame_number: int, scene_name: Optional[str]):

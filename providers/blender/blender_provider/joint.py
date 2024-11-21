@@ -99,7 +99,7 @@ class Joint(JointInterface):
     ):
         objectToLimitOrItsName = self.entity2
         object_to_limit_name = objectToLimitOrItsName
-        relativeToObjectName = Joint._get_entity_or_landmark_name(self.entity1)
+        relative_to_objectName = Joint._get_entity_or_landmark_name(self.entity1)
         if isinstance(object_to_limit_name, LandmarkInterface):
             landmarkEntity = object_to_limit_name
             object_to_limit_name = object_to_limit_name.get_parent_entity().name
@@ -118,13 +118,13 @@ class Joint(JointInterface):
                 z[1] += offset.z
         elif isinstance(object_to_limit_name, EntityInterface):
             object_to_limit_name = object_to_limit_name.name
-        # SA: Blender's Limit Location must be paired with Copy Location if we don't want the objectToLimit's rotation and scale to be affected by relativeToObject's transformations.
+        # SA: Blender's Limit Location must be paired with Copy Location if we don't want the objectToLimit's rotation and scale to be affected by relative_to_object's transformations.
         apply_limit_location_constraint(object_to_limit_name, x, y, z, None)
         apply_copy_location_constraint(
-            object_to_limit_name, relativeToObjectName, True, True, True, True
+            object_to_limit_name, relative_to_objectName, True, True, True, True
         )
         self._apply_pivot_constraint_if_location_and_rotation_limit_constraints_exist(
-            object_to_limit_name, relativeToObjectName
+            object_to_limit_name, relative_to_objectName
         )
 
     def _apply_pivot_constraint_if_location_and_rotation_limit_constraints_exist(
@@ -204,12 +204,12 @@ class Joint(JointInterface):
             object_to_limit_name = object_to_limit_name.get_parent_entity().name
         elif isinstance(object_to_limit_name, EntityInterface):
             object_to_limit_name = object_to_limit_name.name
-        relativeToObjectName = Joint._get_entity_or_landmark_name(self.entity1)
-        relativeToObjectOrParentName = Joint._get_entity_or_landmark_parent_name(
+        relative_to_objectName = Joint._get_entity_or_landmark_name(self.entity1)
+        relative_to_objectOrParentName = Joint._get_entity_or_landmark_parent_name(
             self.entity1
         )
         # applyLimitRotapply_limit_rotation_constraintationConstraint(
-        #     object_to_limit_name, rotation_pair_x, rotation_pair_y, rotation_pair_z, relativeToObjectName)
+        #     object_to_limit_name, rotation_pair_x, rotation_pair_y, rotation_pair_z, relative_to_objectName)
         apply_limit_rotation_constraint(
             object_to_limit_name,
             rotation_pair_x,
@@ -227,10 +227,10 @@ class Joint(JointInterface):
             [value is not None for value in rotation_pair_z]
         )
         apply_copy_rotation_constraint(
-            object_to_limit_name, relativeToObjectOrParentName, copyX, copyY, copyZ
+            object_to_limit_name, relative_to_objectOrParentName, copyX, copyY, copyZ
         )
         self._apply_pivot_constraint_if_location_and_rotation_limit_constraints_exist(
-            object_to_limit_name, relativeToObjectName
+            object_to_limit_name, relative_to_objectName
         )
         return self
 

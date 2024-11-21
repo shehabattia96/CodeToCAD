@@ -6,11 +6,11 @@ from providers.blender.blender_provider.blender_actions.objects import get_objec
 def get_material(
     material_name: str,
 ) -> bpy.types.Material:
-    blenderMaterial = bpy.data.materials.get(material_name)
+    blender_material = bpy.data.materials.get(material_name)
 
-    assert blenderMaterial is not None, f"Material {material_name} does not exist."
+    assert blender_material is not None, f"Material {material_name} does not exist."
 
-    return blenderMaterial
+    return blender_material
 
 
 def get_materials(obj_name: str) -> list[bpy.types.Material]:

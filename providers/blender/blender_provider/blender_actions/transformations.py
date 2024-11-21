@@ -18,13 +18,13 @@ def apply_object_transformations(
 ):
     # Apply the object's transformations (under Object Properties tab)
     # references https://blender.stackexchange.com/a/159540/138679
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     assert (
-        blenderObject.data is not None
+        blender_object.data is not None
     ), f"Object {object_name} does not have data to transform."
 
-    decomposedMatrix: list[Any] = blenderObject.matrix_basis.decompose()
+    decomposedMatrix: list[Any] = blender_object.matrix_basis.decompose()
     translationVector: mathutils.Vector = decomposedMatrix[0]
     rotationQuat: mathutils.Quaternion = decomposedMatrix[1]
     scaleVector: mathutils.Vector = decomposedMatrix[2]
@@ -49,13 +49,13 @@ def apply_object_transformations(
     else:
         basis @= translation
 
-    mesh: bpy.types.Mesh = blenderObject.data
+    mesh: bpy.types.Mesh = blender_object.data
     mesh.transform(transformation)
 
     # Set the object to its world translation
-    blenderObject.matrix_basis = basis
+    blender_object.matrix_basis = basis
 
-    for child in blenderObject.children:
+    for child in blender_object.children:
         child.matrix_basis = transformation @ child.matrix_basis
 
 
@@ -64,9 +64,9 @@ def rotate_object(
     rotation_angles: list[Optional[Angle]],
     rotation_type: BlenderRotationTypes,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    currentRotation = getattr(blenderObject, rotation_type.value)
+    currentRotation = getattr(blender_object, rotation_type.value)
 
     outputRotation = []
 
@@ -77,7 +77,7 @@ def rotate_object(
             angle = newAngle.to_radians().value
         outputRotation.append(angle)
 
-    setattr(blenderObject, rotation_type.value, outputRotation)
+    setattr(blender_object, rotation_type.value, outputRotation)
 
 
 def translate_object(
@@ -85,11 +85,11 @@ def translate_object(
     translation_dimensions: Sequence[Dimension | None],
     translation_type: BlenderTranslationTypes,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     assert len(translation_dimensions) == 3, "translation_dimensions must be length 3"
 
-    currentLocation = blenderObject.location
+    currentLocation = blender_object.location
 
     outputLocation = []
 
@@ -100,17 +100,17 @@ def translate_object(
             location = newLocation.value
         outputLocation.append(location)
 
-    setattr(blenderObject, translation_type.value, outputLocation)
+    setattr(blender_object, translation_type.value, outputLocation)
 
 
 def set_object_location(
     object_name: str, location_dimensions: list[Optional[Dimension]]
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     assert len(location_dimensions) == 3, "location_dimensions must be length 3"
 
-    currentLocation = blenderObject.location
+    currentLocation = blender_object.location
 
     outputLocation = []
 
@@ -121,7 +121,7 @@ def set_object_location(
             location = newLocation.value
         outputLocation.append(location)
 
-    blenderObject.location = outputLocation
+    blender_object.location = outputLocation
 
 
 def scale_object(
@@ -130,11 +130,11 @@ def scale_object(
     y_scale_factor: Optional[float],
     z_scale_factor: Optional[float],
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    currentScale: mathutils.Vector = blenderObject.scale
+    currentScale: mathutils.Vector = blender_object.scale
 
-    blenderObject.scale = (
+    blender_object.scale = (
         x_scale_factor or currentScale.x,
         y_scale_factor or currentScale.y,
         z_scale_factor or currentScale.z,

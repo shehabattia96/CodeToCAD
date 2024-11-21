@@ -13,17 +13,17 @@ def update_view_layer():
 def apply_dependency_graph(
     existing_object_name: str,
 ):
-    blenderObject = get_object(existing_object_name)
-    blenderObjectEvaluated: bpy.types.Object = blenderObject.evaluated_get(
+    blender_object = get_object(existing_object_name)
+    blender_object_evaluated: bpy.types.Object = blender_object.evaluated_get(
         bpy.context.evaluated_depsgraph_get()
     )
-    blenderObject.data = blenderObjectEvaluated.data.copy()
+    blender_object.data = blender_object_evaluated.data.copy()
 
 
 def select_object(object_name: str):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    blenderObject.select_set(True)
+    blender_object.select_set(True)
 
 
 def get_selected_object_name() -> str:

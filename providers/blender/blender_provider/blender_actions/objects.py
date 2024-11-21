@@ -20,10 +20,12 @@ def blender_primitive_function(
     primitiveName = primitive.default_name_in_blender()
 
     # Make sure an object or mesh with the same name don't already exist.
-    blenderObject = bpy.data.objects.get(primitiveName)
+    blender_object = bpy.data.objects.get(primitiveName)
     blenderMesh = bpy.data.meshes.get(primitiveName)
 
-    assert blenderObject is None, f"An object with name {primitiveName} already exists."
+    assert (
+        blender_object is None
+    ), f"An object with name {primitiveName} already exists."
 
     orphanMeshMessage = ""
     if blenderMesh is not None and blenderMesh.users == 0:
@@ -135,28 +137,28 @@ def create_gear(
         addon is not None
     ), f"Could not enable the {addon_name} addon to create extra objects"
 
-    outer_radiusDimension = BlenderLength.convert_dimension_to_blender_unit(
+    outer_radius_dimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(outer_radius)
     ).value
-    inner_radiusDimension = BlenderLength.convert_dimension_to_blender_unit(
+    inner_radius_dimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(inner_radius)
     ).value
-    addendumDimension = BlenderLength.convert_dimension_to_blender_unit(
+    addendum_dimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(addendum)
     ).value
-    dedendumDimension = BlenderLength.convert_dimension_to_blender_unit(
+    dedendum_dimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(dedendum)
     ).value
     heightDimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(height)
     ).value
 
-    if addendumDimension > outer_radiusDimension / 2:
-        addendumDimension = outer_radiusDimension / 2
-    if inner_radiusDimension > outer_radiusDimension:
-        inner_radiusDimension = outer_radiusDimension
-    if dedendumDimension + inner_radiusDimension > outer_radiusDimension:
-        dedendumDimension = outer_radiusDimension - inner_radiusDimension
+    if addendum_dimension > outer_radius_dimension / 2:
+        addendum_dimension = outer_radius_dimension / 2
+    if inner_radius_dimension > outer_radius_dimension:
+        inner_radius_dimension = outer_radius_dimension
+    if dedendum_dimension + inner_radius_dimension > outer_radius_dimension:
+        dedendum_dimension = outer_radius_dimension - inner_radius_dimension
 
     pressure_angleValue = Angle.from_string(pressure_angle).to_radians().value
     skew_angleValue = Angle.from_string(skew_angle).to_radians().value
@@ -166,11 +168,11 @@ def create_gear(
     return bpy.ops.mesh.primitive_gear(
         name=object_name,
         number_of_teeth=number_of_teeth,
-        radius=outer_radiusDimension,
-        addendum=addendumDimension,
-        dedendum=dedendumDimension,
+        radius=outer_radius_dimension,
+        addendum=addendum_dimension,
+        dedendum=dedendum_dimension,
         angle=pressure_angleValue,
-        base=inner_radiusDimension,
+        base=inner_radius_dimension,
         width=heightDimension,
         skew=skew_angleValue,
         conangle=conical_angleValue,
@@ -182,28 +184,28 @@ def make_parent(
     name: str,
     parent_name: str,
 ):
-    blenderObject = get_object(name)
-    blenderParentObject = get_object(parent_name)
+    blender_object = get_object(name)
+    blender_parent_object = get_object(parent_name)
 
-    blenderObject.parent = blenderParentObject
+    blender_object.parent = blender_parent_object
 
 
 def update_object_name(
     old_name: str,
     new_name: str,
 ):
-    blenderObject = get_object(old_name)
+    blender_object = get_object(old_name)
 
-    blenderObject.name = new_name
+    blender_object.name = new_name
 
 
 def get_object_collection_name(
     object_name: str,
 ) -> str:
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     # Assumes the first collection is the main collection
-    [currentCollection] = blenderObject.users_collection
+    [currentCollection] = blender_object.users_collection
 
     return currentCollection.name
 
@@ -212,13 +214,13 @@ def update_object_data_name(
     parent_object_name: str,
     new_name: str,
 ):
-    blenderObject = get_object(parent_object_name)
+    blender_object = get_object(parent_object_name)
 
     assert (
-        blenderObject.data is not None
+        blender_object.data is not None
     ), f"Object {parent_object_name} does not have data to name."
 
-    blenderObject.data.name = new_name
+    blender_object.data.name = new_name
 
 
 # This assumes that landmarks are named with format: `{parent_part_name}_{landmarkName}`
@@ -227,11 +229,11 @@ def update_object_landmark_names(
     old_namePrefix: str,
     new_namePrefix: str,
 ):
-    blenderObject = get_object(parent_object_name)
+    blender_object = get_object(parent_object_name)
 
-    blenderObjectChildren: list[bpy.types.Object] = blenderObject.children
+    blender_object_children: list[bpy.types.Object] = blender_object.children
 
-    for child in blenderObjectChildren:
+    for child in blender_object_children:
         if f"{old_namePrefix}_" in child.name and child.type == "EMPTY":
             update_object_name(
                 child.name,
@@ -240,11 +242,11 @@ def update_object_landmark_names(
 
 
 def remove_object(existing_object_name: str, remove_children=False):
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
     if remove_children:
-        blenderObjectChildren: list[bpy.types.Object] = blenderObject.children
-        for child in blenderObjectChildren:
+        blender_object_children: list[bpy.types.Object] = blender_object.children
+        for child in blender_object_children:
             try:
                 remove_object(child.name, True)
             except Exception as e:
@@ -252,20 +254,20 @@ def remove_object(existing_object_name: str, remove_children=False):
 
     # Not all objects have data, but if they do, then deleting the data
     # deletes the object
-    if blenderObject.data and isinstance(blenderObject.data, bpy.types.Mesh):
-        bpy.data.meshes.remove(blenderObject.data)
-    elif blenderObject.data and isinstance(blenderObject.data, bpy.types.Curve):
-        bpy.data.curves.remove(blenderObject.data)
-    elif blenderObject.data and isinstance(blenderObject.data, bpy.types.TextCurve):
-        bpy.data.curves.remove(blenderObject.data)
+    if blender_object.data and isinstance(blender_object.data, bpy.types.Mesh):
+        bpy.data.meshes.remove(blender_object.data)
+    elif blender_object.data and isinstance(blender_object.data, bpy.types.Curve):
+        bpy.data.curves.remove(blender_object.data)
+    elif blender_object.data and isinstance(blender_object.data, bpy.types.TextCurve):
+        bpy.data.curves.remove(blender_object.data)
     else:
-        bpy.data.objects.remove(blenderObject)
+        bpy.data.objects.remove(blender_object)
 
 
 def create_object(name: str, data: Optional[Any] = None):
-    blenderObject = bpy.data.objects.get(name)
+    blender_object = bpy.data.objects.get(name)
 
-    assert blenderObject is None, f"Object {name} already exists"
+    assert blender_object is None, f"Object {name} already exists"
 
     return bpy.data.objects.new(name, data)
 
@@ -274,16 +276,16 @@ def create_object_vertex_group(
     object_name: str,
     vertex_group_name: str,
 ):
-    blenderObject = get_object(object_name)
-    return blenderObject.vertex_groups.new(name=vertex_group_name)
+    blender_object = get_object(object_name)
+    return blender_object.vertex_groups.new(name=vertex_group_name)
 
 
 def get_object_vertex_group(
     object_name: str,
     vertex_group_name: str,
 ):
-    blenderObject = get_object(object_name)
-    return blenderObject.vertex_groups.get(vertex_group_name)
+    blender_object = get_object(object_name)
+    return blender_object.vertex_groups.get(vertex_group_name)
 
 
 def add_verticies_to_vertex_group(vertex_group_object, vertex_indecies: list[int]):
@@ -293,28 +295,28 @@ def add_verticies_to_vertex_group(vertex_group_object, vertex_indecies: list[int
 def get_object_visibility(
     existing_object_name: str,
 ) -> bool:
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
-    return blenderObject.visible_get()
+    return blender_object.visible_get()
 
 
 def set_object_visibility(existing_object_name: str, is_visible: bool):
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
-    # blenderObject.hide_viewport = not is_visible
-    # blenderObject.hide_render = not is_visible
-    blenderObject.hide_set(not is_visible)
+    # blender_object.hide_viewport = not is_visible
+    # blender_object.hide_render = not is_visible
+    blender_object.hide_set(not is_visible)
 
 
 def get_object_local_location(
     object_name: str,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     return Point.from_list(
         [
             Dimension(p, BlenderLength.DEFAULT_BLENDER_UNIT.value)
-            for p in blenderObject.location
+            for p in blender_object.location
         ]
     )
 
@@ -322,12 +324,12 @@ def get_object_local_location(
 def get_object_world_location(
     object_name: str,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     return Point.from_list(
         [
             Dimension(p, BlenderLength.DEFAULT_BLENDER_UNIT.value)
-            for p in blenderObject.matrix_world.translation
+            for p in blender_object.matrix_world.translation
         ]
     )
 
@@ -335,9 +337,9 @@ def get_object_world_location(
 def get_object_world_pose(
     object_name: str,
 ) -> list[float]:
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    listOfTuples = [v.to_tuple() for v in list(blenderObject.matrix_world)]
+    listOfTuples = [v.to_tuple() for v in list(blender_object.matrix_world)]
 
     return [value for values in listOfTuples for value in values]
 
@@ -345,11 +347,11 @@ def get_object_world_pose(
 def get_object(
     object_name: str,
 ) -> bpy.types.Object:
-    blenderObject = bpy.data.objects.get(object_name)
+    blender_object = bpy.data.objects.get(object_name)
 
-    assert blenderObject is not None, f"Object {object_name} does not exists"
+    assert blender_object is not None, f"Object {object_name} does not exists"
 
-    return blenderObject
+    return blender_object
 
 
 def get_object_or_none(
@@ -359,8 +361,8 @@ def get_object_or_none(
 
 
 def get_objectType(object_name: str) -> BlenderObjectTypes:
-    blenderObject = bpy.data.objects.get(object_name)
+    blender_object = bpy.data.objects.get(object_name)
 
-    assert blenderObject is not None, f"Object {object_name} does not exists"
+    assert blender_object is not None, f"Object {object_name} does not exists"
 
-    return BlenderObjectTypes[blenderObject.type]
+    return BlenderObjectTypes[blender_object.type]
