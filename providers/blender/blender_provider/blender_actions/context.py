@@ -14,10 +14,10 @@ def apply_dependency_graph(
     existing_object_name: str,
 ):
     blender_object = get_object(existing_object_name)
-    blender_objectEvaluated: bpy.types.Object = blender_object.evaluated_get(
+    blender_object_evaluated: bpy.types.Object = blender_object.evaluated_get(
         bpy.context.evaluated_depsgraph_get()
     )
-    blender_object.data = blender_objectEvaluated.data.copy()
+    blender_object.data = blender_object_evaluated.data.copy()
 
 
 def select_object(object_name: str):

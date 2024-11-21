@@ -142,29 +142,29 @@ class BlenderConstraintTypes(Enum):
     COPY_LOCATION = ConstraintTypes.FixedPosition
 
     def get_default_blender_name(self):
-        if self == BlenderConstraintTypes.LIMIT_LOCATION:
+        if self.name == BlenderConstraintTypes.LIMIT_LOCATION.name:
             return "Limit Location"
-        if self == BlenderConstraintTypes.LIMIT_ROTATION:
+        elif self.name == BlenderConstraintTypes.LIMIT_ROTATION.name:
             return "Limit Rotation"
-        if self == BlenderConstraintTypes.PIVOT:
+        elif self.name == BlenderConstraintTypes.PIVOT.name:
             return "Pivot"
-        if self == BlenderConstraintTypes.COPY_ROTATION:
+        elif self.name == BlenderConstraintTypes.COPY_ROTATION.name:
             return "Copy Rotation"
-        if self == BlenderConstraintTypes.COPY_LOCATION:
+        elif self.name == BlenderConstraintTypes.COPY_LOCATION.name:
             return "Copy Location"
 
     def format_constraint_name(self, object_name, relative_to_object_name):
         name = ""
 
-        if self == BlenderConstraintTypes.LIMIT_LOCATION:
+        if self.name == BlenderConstraintTypes.LIMIT_LOCATION.name:
             name = "lim_loc"
-        if self == BlenderConstraintTypes.LIMIT_ROTATION:
+        elif self.name == BlenderConstraintTypes.LIMIT_ROTATION.name:
             name = "lim_rot"
-        if self == BlenderConstraintTypes.PIVOT:
+        elif self.name == BlenderConstraintTypes.PIVOT.name:
             name = "pivot"
-        if self == BlenderConstraintTypes.COPY_ROTATION:
+        elif self.name == BlenderConstraintTypes.COPY_ROTATION.name:
             name = "copy_rot"
-        if self == BlenderConstraintTypes.COPY_LOCATION:
+        elif self.name == BlenderConstraintTypes.COPY_LOCATION.name:
             name = "copy_loc"
 
         name += f"_{object_name}"

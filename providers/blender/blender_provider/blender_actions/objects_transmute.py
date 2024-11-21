@@ -63,7 +63,7 @@ def transfer_landmarks(
 ):
     update_view_layer()
 
-    fromblender_object = get_object(from_object_name)
+    from_blender_object = get_object(from_object_name)
     toblender_object = get_object(to_object_name)
 
     translation = (
@@ -78,8 +78,8 @@ def transfer_landmarks(
 
     defaultCollection = get_object_collection_name(to_object_name)
 
-    fromblender_objectChildren: list[bpy.types.Object] = fromblender_object.children
-    for child in fromblender_objectChildren:
+    from_blender_object_children: list[bpy.types.Object] = from_blender_object.children
+    for child in from_blender_object_children:
         if isinstance(child, BlenderTypes.OBJECT.value) and child.type == "EMPTY":
             child.name = f"{to_object_name}_{child.name}"
             isAlreadyExists = bpy.data.objects.get(child.name) is None
@@ -111,8 +111,8 @@ def duplicate_object(
     assign_object_to_collection(new_object_name, defaultCollection)
 
     if copy_landmarks:
-        blender_objectChildren: list[bpy.types.Object] = blender_object.children
-        for child in blender_objectChildren:
+        blender_object_children: list[bpy.types.Object] = blender_object.children
+        for child in blender_object_children:
             if isinstance(child, BlenderTypes.OBJECT.value) and child.type == "EMPTY":
                 newChild: bpy.types.Object = child.copy()
                 newChild.name = child.name.replace(
