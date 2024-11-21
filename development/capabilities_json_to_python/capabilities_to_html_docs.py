@@ -37,7 +37,12 @@ def generate_html_for_epoch(epoch, capabilities_data, output_path):
         supported_providers=_get_provider_supports(),
         epochs=get_all_epochs()  # Pass the list of epochs to the template
     )
-    with open(output_path, "w") as fh:
+    
+    # print(output_from_parsed_template);
+    
+    # Ensure the output directory exists before writing the file
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding='utf-8') as fh:
         fh.write(output_from_parsed_template)
 
 def get_all_epochs():
@@ -48,22 +53,23 @@ if __name__ == "__main__":
     latest_epoch = epochs[-1] if epochs else None
 
     for epoch in epochs:
-        with open(f"docs/capabilities/{epoch}/capabilities.json") as f:
+        with open(f"docs/capabilities/{epoch}") as f:
             capabilities_data = json.load(f)
         
-        output_path = f"docs/release/{epoch}/docs.html"
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        generate_html_for_epoch(epoch, capabilities_data, output_path)
+        output_path = f"docs/{epoch}"
+        generate_html_for_epoch(epoch, f"docs/capabilities/{epoch}", output_path)
 
     # Generate the latest release version
     if latest_epoch:
-        with open(f"docs/capabilities/{latest_epoch}/capabilities.json") as f:
+        with open(f"docs/capabilities/{latest_epoch}") as f:
             capabilities_data = json.load(f)
-        generate_html_for_epoch(latest_epoch, capabilities_data, "docs/release/docs.html")
+        generate_html_for_epoch(latest_epoch, f"docs/capabilities/{latest_epoch}", "docs/release/docs.html")
 
     # Generate the development version
     with open("codetocad/capabilities.json") as f:
         capabilities_data = json.load(f)
-    generate_html_for_epoch("develop", capabilities_data, "docs/develop/docs.html")
+        
+    capabilities_data_path = "codetocad/capabilities.json"
+    generate_html_for_epoch("develop", "codetocad/capabilities.json", "docs/develop/docs.html")
 
     print("HTML documentation generation complete.")
