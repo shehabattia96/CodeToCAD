@@ -3,6 +3,15 @@ from console_python import replace_help
 from functools import wraps
 
 
+def add_user_site_packages_to_path():
+    import site
+    import sys
+
+    user_site_pkgs = site.getusersitepackages()
+    if user_site_pkgs not in sys.path:
+        sys.path.append(user_site_pkgs)
+
+
 def install_debugpy(uninstall: bool = False):
     """
     Attempts to pip install debugpy inside Blender
@@ -15,14 +24,17 @@ def install_debugpy(uninstall: bool = False):
     python = os.path.abspath(sys.executable)
 
     if uninstall:
-        subprocess.call([python, "-m", "pip", "uninstall", "debugpy", "--yes"])
+        subprocess.call(
+            [python, "-m", "pip", "uninstall", "--user", "debugpy", "--yes"]
+        )
         return
 
-    subprocess.call([python, "-m", "pip", "install", "debugpy"])
+    subprocess.call([python, "-m", "pip", "install", "--user", "debugpy"])
 
 
 def start_debugger(host: str = "localhost", port: int = 5678):
     try:
+        add_user_site_packages_to_path()
         import debugpy
     except Exception as e:
         print("debugpy is not installed, will try to auto-install.", e)
