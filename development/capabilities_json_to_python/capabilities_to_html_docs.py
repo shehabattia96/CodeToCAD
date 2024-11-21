@@ -46,28 +46,29 @@ def generate_html_for_epoch(epoch, capabilities_data, output_path):
         fh.write(output_from_parsed_template)
 
 def get_all_epochs():
-    return sorted(os.listdir("docs/capabilities/"))
+    epochs = [file.replace('capabilities_', '').replace('.json', '') for file in os.listdir("docs/capabilities/") if file.startswith('capabilities_')]
+    return sorted(epochs)
 
 if __name__ == "__main__":
     epochs = get_all_epochs()
     latest_epoch = epochs[-1] if epochs else None
 
     for epoch in epochs:
-        with open(f"docs/capabilities/{epoch}") as f:
-            capabilities_data = json.load(f)
+        # with open(f"docs/capabilities/{epoch}") as f:
+        #     capabilities_data = json.load(f)
         
-        output_path = f"docs/{epoch}"
-        generate_html_for_epoch(epoch, f"docs/capabilities/{epoch}", output_path)
+        output_path = f"docs/{epoch}.html"
+        generate_html_for_epoch(epoch, f"docs/capabilities/capabilities_{epoch}.json", output_path)
 
     # Generate the latest release version
     if latest_epoch:
-        with open(f"docs/capabilities/{latest_epoch}") as f:
-            capabilities_data = json.load(f)
-        generate_html_for_epoch(latest_epoch, f"docs/capabilities/{latest_epoch}", "docs/release/docs.html")
+        # with open(f"docs/capabilities/{latest_epoch}") as f:
+        #     capabilities_data = json.load(f)
+        generate_html_for_epoch(latest_epoch, f"docs/capabilities/capabilities_{latest_epoch}.json", "docs/release/docs.html")
 
     # Generate the development version
-    with open("codetocad/capabilities.json") as f:
-        capabilities_data = json.load(f)
+    # with open("codetocad/capabilities.json") as f:
+    #     capabilities_data = json.load(f)
         
     capabilities_data_path = "codetocad/capabilities.json"
     generate_html_for_epoch("develop", "codetocad/capabilities.json", "docs/develop/docs.html")
