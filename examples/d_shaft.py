@@ -1,5 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from codetocad import *
+from codetocad.interfaces.part_interface import PartInterface
 
 
 @dataclass
@@ -8,7 +9,7 @@ class DShaft:
     radius: Dimension
     d_profile_radius: Dimension
     d_profile_length: Dimension
-    tolerance: Dimension = Dimension(0)
+    tolerance: Dimension = field(default_factory=lambda: Dimension(0))
 
     def create(self, name, is_d_shaft_both_sides=False) -> PartInterface:
         shaft_length = self.shaft_length
