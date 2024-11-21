@@ -35,7 +35,9 @@ def generate_html_for_epoch(epoch, capabilities_data, output_path):
     output_from_parsed_template = template.render(
         capabilities_loader=CapabilitiesLoader(capabilities_data),
         supported_providers=_get_provider_supports(),
-        epochs=get_all_epochs()  # Pass the list of epochs to the template
+        epochs=get_all_epochs(),  # Pass the list of epochs to the template
+        project_root_path=os.path.dirname(__file__),  # Pass the project's root path
+        selected_doc=output_path  # Pass the current document path
     )
     
     # print(output_from_parsed_template);
@@ -57,14 +59,14 @@ if __name__ == "__main__":
         # with open(f"docs/capabilities/{epoch}") as f:
         #     capabilities_data = json.load(f)
         
-        output_path = f"docs/{epoch}.html"
+        output_path = f"docs/release/{epoch}.html"
         generate_html_for_epoch(epoch, f"docs/capabilities/capabilities_{epoch}.json", output_path)
 
     # Generate the latest release version
     if latest_epoch:
         # with open(f"docs/capabilities/{latest_epoch}") as f:
         #     capabilities_data = json.load(f)
-        generate_html_for_epoch(latest_epoch, f"docs/capabilities/capabilities_{latest_epoch}.json", "docs/release/docs.html")
+        generate_html_for_epoch(latest_epoch, f"docs/capabilities/capabilities_{latest_epoch}.json", "docs/docs.html")
 
     # Generate the development version
     # with open("codetocad/capabilities.json") as f:
