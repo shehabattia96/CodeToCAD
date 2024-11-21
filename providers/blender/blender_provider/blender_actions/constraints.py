@@ -24,8 +24,8 @@ from providers.blender.blender_provider.blender_definitions import (
 
 
 def get_constraint(object_name: str, constraint_name) -> Optional[bpy.types.Constraint]:
-    blenderObject = get_object(object_name)
-    return blenderObject.constraints.get(constraint_name)
+    blender_object = get_object(object_name)
+    return blender_object.constraints.get(constraint_name)
 
 
 def apply_constraint(
@@ -33,7 +33,7 @@ def apply_constraint(
     constraint_type: BlenderConstraintTypes,
     **kwargs,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     constraint_name = kwargs.get("name") or constraint_type.get_default_blender_name()
 
@@ -41,7 +41,7 @@ def apply_constraint(
 
     # If it doesn't exist, create it:
     if constraint is None:
-        constraint = blenderObject.constraints.new(constraint_type.name)
+        constraint = blender_object.constraints.new(constraint_type.name)
 
     # Apply every parameter passed in for modifier:
     for key, value in kwargs.items():
@@ -56,7 +56,7 @@ def apply_limit_location_constraint(
     relative_to_object_name: Optional[str],
     **kwargs,
 ):
-    relativeToObject = (
+    relative_to_object = (
         get_object(relative_to_object_name) if relative_to_object_name else None
     )
 
@@ -64,43 +64,41 @@ def apply_limit_location_constraint(
     [minY, maxY] = y or [None, None]
     [minZ, maxZ] = z or [None, None]
 
-    keywordArguments = kwargs or {}
+    keyword_args = kwargs or {}
 
-    keywordArguments["name"] = (
-        BlenderConstraintTypes.LIMIT_LOCATION.format_constraint_name(
-            object_name, relativeToObject
-        )
+    keyword_args["name"] = BlenderConstraintTypes.LIMIT_LOCATION.format_constraint_name(
+        object_name, relative_to_object
     )
 
-    keywordArguments["owner_space"] = "CUSTOM" if relativeToObject else "WORLD"
+    keyword_args["owner_space"] = "CUSTOM" if relative_to_object else "WORLD"
 
-    keywordArguments["space_object"] = relativeToObject
+    keyword_args["space_object"] = relative_to_object
 
-    keywordArguments["use_transform_limit"] = True
+    keyword_args["use_transform_limit"] = True
 
     if minX:
-        keywordArguments["use_min_x"] = True
-        keywordArguments["min_x"] = minX.value
+        keyword_args["use_min_x"] = True
+        keyword_args["min_x"] = minX.value
     if minY:
-        keywordArguments["use_min_y"] = True
-        keywordArguments["min_y"] = minY.value
+        keyword_args["use_min_y"] = True
+        keyword_args["min_y"] = minY.value
     if minZ:
-        keywordArguments["use_min_z"] = True
-        keywordArguments["min_z"] = minZ.value
+        keyword_args["use_min_z"] = True
+        keyword_args["min_z"] = minZ.value
     if maxX:
-        keywordArguments["use_max_x"] = True
-        keywordArguments["max_x"] = maxX.value
+        keyword_args["use_max_x"] = True
+        keyword_args["max_x"] = maxX.value
     if maxY:
-        keywordArguments["use_max_y"] = True
-        keywordArguments["max_y"] = maxY.value
+        keyword_args["use_max_y"] = True
+        keyword_args["max_y"] = maxY.value
     if maxZ:
-        keywordArguments["use_max_z"] = True
-        keywordArguments["max_z"] = maxZ.value
+        keyword_args["use_max_z"] = True
+        keyword_args["max_z"] = maxZ.value
 
     apply_constraint(
         object_name,
         BlenderConstraintTypes.LIMIT_LOCATION,
-        **keywordArguments,
+        **keyword_args,
     )
 
 
@@ -112,7 +110,7 @@ def apply_limit_rotation_constraint(
     relative_to_object_name: Optional[str],
     **kwargs,
 ):
-    relativeToObject = (
+    relative_to_object = (
         get_object(relative_to_object_name) if relative_to_object_name else None
     )
 
@@ -120,43 +118,41 @@ def apply_limit_rotation_constraint(
     [minY, maxY] = y or [None, None]
     [minZ, maxZ] = z or [None, None]
 
-    keywordArguments = kwargs or {}
+    keyword_args = kwargs or {}
 
-    keywordArguments["name"] = (
-        BlenderConstraintTypes.LIMIT_ROTATION.format_constraint_name(
-            object_name, relativeToObject
-        )
+    keyword_args["name"] = BlenderConstraintTypes.LIMIT_ROTATION.format_constraint_name(
+        object_name, relative_to_object
     )
 
-    keywordArguments["owner_space"] = "CUSTOM" if relativeToObject else "WORLD"
+    keyword_args["owner_space"] = "CUSTOM" if relative_to_object else "WORLD"
 
-    keywordArguments["space_object"] = relativeToObject
+    keyword_args["space_object"] = relative_to_object
 
-    keywordArguments["use_transform_limit"] = True
+    keyword_args["use_transform_limit"] = True
 
     if minX:
-        keywordArguments["use_limit_x"] = True
-        keywordArguments["min_x"] = minX.to_radians().value
+        keyword_args["use_limit_x"] = True
+        keyword_args["min_x"] = minX.to_radians().value
     if minY:
-        keywordArguments["use_limit_y"] = True
-        keywordArguments["min_y"] = minY.to_radians().value
+        keyword_args["use_limit_y"] = True
+        keyword_args["min_y"] = minY.to_radians().value
     if minZ:
-        keywordArguments["use_limit_z"] = True
-        keywordArguments["min_z"] = minZ.to_radians().value
+        keyword_args["use_limit_z"] = True
+        keyword_args["min_z"] = minZ.to_radians().value
     if maxX:
-        keywordArguments["use_limit_x"] = True
-        keywordArguments["max_x"] = maxX.to_radians().value
+        keyword_args["use_limit_x"] = True
+        keyword_args["max_x"] = maxX.to_radians().value
     if maxY:
-        keywordArguments["use_limit_y"] = True
-        keywordArguments["max_y"] = maxY.to_radians().value
+        keyword_args["use_limit_y"] = True
+        keyword_args["max_y"] = maxY.to_radians().value
     if maxZ:
-        keywordArguments["use_limit_z"] = True
-        keywordArguments["max_z"] = maxZ.to_radians().value
+        keyword_args["use_limit_z"] = True
+        keyword_args["max_z"] = maxZ.to_radians().value
 
     apply_constraint(
         object_name,
         BlenderConstraintTypes.LIMIT_ROTATION,
-        **keywordArguments,
+        **keyword_args,
     )
 
 

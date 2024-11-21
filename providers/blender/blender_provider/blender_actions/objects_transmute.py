@@ -41,16 +41,16 @@ def create_mesh_from_curve(
         evaluatedObject, depsgraph=dependencyGraph
     )
 
-    blenderObject = create_object(new_object_name, mesh)
+    blender_object = create_object(new_object_name, mesh)
 
-    blenderObject.matrix_world = existingCurveObject.matrix_world
+    blender_object.matrix_world = existingCurveObject.matrix_world
 
     assign_object_to_collection(new_object_name)
 
     existingCurveObjectChildren: list[bpy.types.Object] = existingCurveObject.children
     for child in existingCurveObjectChildren:
         if isinstance(child, BlenderTypes.OBJECT.value) and child.type == "EMPTY":
-            child.parent = blenderObject
+            child.parent = blender_object
 
     # twisted logic here, but if we renamed this above, we want to nuke it because we're done with it.
     if existingCurveObject.name != existing_curve_object_name:
@@ -63,8 +63,8 @@ def transfer_landmarks(
 ):
     update_view_layer()
 
-    fromBlenderObject = get_object(from_object_name)
-    toBlenderObject = get_object(to_object_name)
+    fromblender_object = get_object(from_object_name)
+    toblender_object = get_object(to_object_name)
 
     translation = (
         get_object_world_location(from_object_name)
@@ -78,15 +78,15 @@ def transfer_landmarks(
 
     defaultCollection = get_object_collection_name(to_object_name)
 
-    fromBlenderObjectChildren: list[bpy.types.Object] = fromBlenderObject.children
-    for child in fromBlenderObjectChildren:
+    fromblender_objectChildren: list[bpy.types.Object] = fromblender_object.children
+    for child in fromblender_objectChildren:
         if isinstance(child, BlenderTypes.OBJECT.value) and child.type == "EMPTY":
             child.name = f"{to_object_name}_{child.name}"
             isAlreadyExists = bpy.data.objects.get(child.name) is None
             if isAlreadyExists:
                 print(f"{child.name} already exists. Skipping landmark transfer.")
                 continue
-            child.parent = toBlenderObject
+            child.parent = toblender_object
             child.location = child.location + mathutils.Vector(translation)
             assign_object_to_collection(child.name, defaultCollection)
 
@@ -98,11 +98,11 @@ def duplicate_object(
 
     assert clonedObject is None, f"Object with name {new_object_name} already exists."
 
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
-    clonedObject: bpy.types.Object = blenderObject.copy()
+    clonedObject: bpy.types.Object = blender_object.copy()
     clonedObject.name = new_object_name
-    clonedObject.data = blenderObject.data.copy()
+    clonedObject.data = blender_object.data.copy()
     clonedObject.data.name = new_object_name
 
     # Link clonedObject to the original object's collection.
@@ -111,8 +111,8 @@ def duplicate_object(
     assign_object_to_collection(new_object_name, defaultCollection)
 
     if copy_landmarks:
-        blenderObjectChildren: list[bpy.types.Object] = blenderObject.children
-        for child in blenderObjectChildren:
+        blender_objectChildren: list[bpy.types.Object] = blender_object.children
+        for child in blender_objectChildren:
             if isinstance(child, BlenderTypes.OBJECT.value) and child.type == "EMPTY":
                 newChild: bpy.types.Object = child.copy()
                 newChild.name = child.name.replace(

@@ -9,21 +9,23 @@ from providers.blender.blender_provider.blender_actions.addons import addon_set_
 from codetocad.utilities import get_dimension_list_from_string_list
 from providers.blender.blender_provider.blender_definitions import (
     BlenderLength,
-    BlenderObjectPrimitiveTypes,
-    BlenderObjectTypes,
+    blender_objectPrimitiveTypes,
+    blender_objectTypes,
 )
 
 
 def blender_primitive_function(
-    primitive: BlenderObjectPrimitiveTypes, dimensions, **kwargs
+    primitive: blender_objectPrimitiveTypes, dimensions, **kwargs
 ):
     primitiveName = primitive.default_name_in_blender()
 
     # Make sure an object or mesh with the same name don't already exist.
-    blenderObject = bpy.data.objects.get(primitiveName)
+    blender_object = bpy.data.objects.get(primitiveName)
     blenderMesh = bpy.data.meshes.get(primitiveName)
 
-    assert blenderObject is None, f"An object with name {primitiveName} already exists."
+    assert (
+        blender_object is None
+    ), f"An object with name {primitiveName} already exists."
 
     orphanMeshMessage = ""
     if blenderMesh is not None and blenderMesh.users == 0:
@@ -37,12 +39,12 @@ def blender_primitive_function(
         blenderMesh is None
     ), f"A mesh with name {primitiveName} already exists. {orphanMeshMessage}"
 
-    if primitive == BlenderObjectPrimitiveTypes.cube:
+    if primitive == blender_objectPrimitiveTypes.cube:
         return bpy.ops.mesh.primitive_cube_add(
             size=1, scale=[dimension.value for dimension in dimensions[:3]], **kwargs
         )
 
-    if primitive == BlenderObjectPrimitiveTypes.cone:
+    if primitive == blender_objectPrimitiveTypes.cone:
         return bpy.ops.mesh.primitive_cone_add(
             radius1=dimensions[0].value,
             radius2=dimensions[1].value,
@@ -50,12 +52,12 @@ def blender_primitive_function(
             **kwargs,
         )
 
-    if primitive == BlenderObjectPrimitiveTypes.cylinder:
+    if primitive == blender_objectPrimitiveTypes.cylinder:
         return bpy.ops.mesh.primitive_cylinder_add(
             radius=dimensions[0].value, depth=dimensions[1].value, **kwargs
         )
 
-    if primitive == BlenderObjectPrimitiveTypes.torus:
+    if primitive == blender_objectPrimitiveTypes.torus:
         return bpy.ops.mesh.primitive_torus_add(
             mode="EXT_INT",
             abso_minor_rad=dimensions[0].value,
@@ -63,29 +65,29 @@ def blender_primitive_function(
             **kwargs,
         )
 
-    if primitive == BlenderObjectPrimitiveTypes.sphere:
+    if primitive == blender_objectPrimitiveTypes.sphere:
         return bpy.ops.mesh.primitive_ico_sphere_add(
             radius=dimensions[0].value, **kwargs
         )
 
-    if primitive == BlenderObjectPrimitiveTypes.uvsphere:
+    if primitive == blender_objectPrimitiveTypes.uvsphere:
         return bpy.ops.mesh.primitive_uv_sphere_add(
             radius=dimensions[0].value, **kwargs
         )
 
-    if primitive == BlenderObjectPrimitiveTypes.circle:
+    if primitive == blender_objectPrimitiveTypes.circle:
         return bpy.ops.mesh.primitive_circle_add(radius=dimensions[0].value, **kwargs)
 
-    if primitive == BlenderObjectPrimitiveTypes.grid:
+    if primitive == blender_objectPrimitiveTypes.grid:
         return bpy.ops.mesh.primitive_grid_add(size=dimensions[0].value, **kwargs)
 
-    if primitive == BlenderObjectPrimitiveTypes.monkey:
+    if primitive == blender_objectPrimitiveTypes.monkey:
         return bpy.ops.mesh.primitive_monkey_add(size=dimensions[0].value, **kwargs)
 
-    if primitive == BlenderObjectPrimitiveTypes.empty:
+    if primitive == blender_objectPrimitiveTypes.empty:
         return bpy.ops.object.empty_add(radius=dimensions[0].value, **kwargs)
 
-    if primitive == BlenderObjectPrimitiveTypes.plane:
+    if primitive == blender_objectPrimitiveTypes.plane:
         return bpy.ops.mesh.primitive_plane_add(**kwargs)
 
     raise Exception(f"Primitive with name {primitive.name} is not implemented.")
@@ -93,7 +95,7 @@ def blender_primitive_function(
 
 # Extracts dimensions from a string, then passes them as arguments to the blender_primitive_function
 def add_primitive(
-    primitive_type: BlenderObjectPrimitiveTypes,
+    primitive_type: blender_objectPrimitiveTypes,
     dimensions: str,
     **kwargs,
 ):
@@ -182,28 +184,28 @@ def make_parent(
     name: str,
     parent_name: str,
 ):
-    blenderObject = get_object(name)
+    blender_object = get_object(name)
     blenderParentObject = get_object(parent_name)
 
-    blenderObject.parent = blenderParentObject
+    blender_object.parent = blenderParentObject
 
 
 def update_object_name(
     old_name: str,
     new_name: str,
 ):
-    blenderObject = get_object(old_name)
+    blender_object = get_object(old_name)
 
-    blenderObject.name = new_name
+    blender_object.name = new_name
 
 
 def get_object_collection_name(
     object_name: str,
 ) -> str:
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     # Assumes the first collection is the main collection
-    [currentCollection] = blenderObject.users_collection
+    [currentCollection] = blender_object.users_collection
 
     return currentCollection.name
 
@@ -212,13 +214,13 @@ def update_object_data_name(
     parent_object_name: str,
     new_name: str,
 ):
-    blenderObject = get_object(parent_object_name)
+    blender_object = get_object(parent_object_name)
 
     assert (
-        blenderObject.data is not None
+        blender_object.data is not None
     ), f"Object {parent_object_name} does not have data to name."
 
-    blenderObject.data.name = new_name
+    blender_object.data.name = new_name
 
 
 # This assumes that landmarks are named with format: `{parent_part_name}_{landmarkName}`
@@ -227,11 +229,11 @@ def update_object_landmark_names(
     old_namePrefix: str,
     new_namePrefix: str,
 ):
-    blenderObject = get_object(parent_object_name)
+    blender_object = get_object(parent_object_name)
 
-    blenderObjectChildren: list[bpy.types.Object] = blenderObject.children
+    blender_objectChildren: list[bpy.types.Object] = blender_object.children
 
-    for child in blenderObjectChildren:
+    for child in blender_objectChildren:
         if f"{old_namePrefix}_" in child.name and child.type == "EMPTY":
             update_object_name(
                 child.name,
@@ -240,11 +242,11 @@ def update_object_landmark_names(
 
 
 def remove_object(existing_object_name: str, remove_children=False):
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
     if remove_children:
-        blenderObjectChildren: list[bpy.types.Object] = blenderObject.children
-        for child in blenderObjectChildren:
+        blender_objectChildren: list[bpy.types.Object] = blender_object.children
+        for child in blender_objectChildren:
             try:
                 remove_object(child.name, True)
             except Exception as e:
@@ -252,20 +254,20 @@ def remove_object(existing_object_name: str, remove_children=False):
 
     # Not all objects have data, but if they do, then deleting the data
     # deletes the object
-    if blenderObject.data and isinstance(blenderObject.data, bpy.types.Mesh):
-        bpy.data.meshes.remove(blenderObject.data)
-    elif blenderObject.data and isinstance(blenderObject.data, bpy.types.Curve):
-        bpy.data.curves.remove(blenderObject.data)
-    elif blenderObject.data and isinstance(blenderObject.data, bpy.types.TextCurve):
-        bpy.data.curves.remove(blenderObject.data)
+    if blender_object.data and isinstance(blender_object.data, bpy.types.Mesh):
+        bpy.data.meshes.remove(blender_object.data)
+    elif blender_object.data and isinstance(blender_object.data, bpy.types.Curve):
+        bpy.data.curves.remove(blender_object.data)
+    elif blender_object.data and isinstance(blender_object.data, bpy.types.TextCurve):
+        bpy.data.curves.remove(blender_object.data)
     else:
-        bpy.data.objects.remove(blenderObject)
+        bpy.data.objects.remove(blender_object)
 
 
 def create_object(name: str, data: Optional[Any] = None):
-    blenderObject = bpy.data.objects.get(name)
+    blender_object = bpy.data.objects.get(name)
 
-    assert blenderObject is None, f"Object {name} already exists"
+    assert blender_object is None, f"Object {name} already exists"
 
     return bpy.data.objects.new(name, data)
 
@@ -274,16 +276,16 @@ def create_object_vertex_group(
     object_name: str,
     vertex_group_name: str,
 ):
-    blenderObject = get_object(object_name)
-    return blenderObject.vertex_groups.new(name=vertex_group_name)
+    blender_object = get_object(object_name)
+    return blender_object.vertex_groups.new(name=vertex_group_name)
 
 
 def get_object_vertex_group(
     object_name: str,
     vertex_group_name: str,
 ):
-    blenderObject = get_object(object_name)
-    return blenderObject.vertex_groups.get(vertex_group_name)
+    blender_object = get_object(object_name)
+    return blender_object.vertex_groups.get(vertex_group_name)
 
 
 def add_verticies_to_vertex_group(vertex_group_object, vertex_indecies: list[int]):
@@ -293,28 +295,28 @@ def add_verticies_to_vertex_group(vertex_group_object, vertex_indecies: list[int
 def get_object_visibility(
     existing_object_name: str,
 ) -> bool:
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
-    return blenderObject.visible_get()
+    return blender_object.visible_get()
 
 
 def set_object_visibility(existing_object_name: str, is_visible: bool):
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
-    # blenderObject.hide_viewport = not is_visible
-    # blenderObject.hide_render = not is_visible
-    blenderObject.hide_set(not is_visible)
+    # blender_object.hide_viewport = not is_visible
+    # blender_object.hide_render = not is_visible
+    blender_object.hide_set(not is_visible)
 
 
 def get_object_local_location(
     object_name: str,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     return Point.from_list(
         [
             Dimension(p, BlenderLength.DEFAULT_BLENDER_UNIT.value)
-            for p in blenderObject.location
+            for p in blender_object.location
         ]
     )
 
@@ -322,12 +324,12 @@ def get_object_local_location(
 def get_object_world_location(
     object_name: str,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     return Point.from_list(
         [
             Dimension(p, BlenderLength.DEFAULT_BLENDER_UNIT.value)
-            for p in blenderObject.matrix_world.translation
+            for p in blender_object.matrix_world.translation
         ]
     )
 
@@ -335,9 +337,9 @@ def get_object_world_location(
 def get_object_world_pose(
     object_name: str,
 ) -> list[float]:
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    listOfTuples = [v.to_tuple() for v in list(blenderObject.matrix_world)]
+    listOfTuples = [v.to_tuple() for v in list(blender_object.matrix_world)]
 
     return [value for values in listOfTuples for value in values]
 
@@ -345,11 +347,11 @@ def get_object_world_pose(
 def get_object(
     object_name: str,
 ) -> bpy.types.Object:
-    blenderObject = bpy.data.objects.get(object_name)
+    blender_object = bpy.data.objects.get(object_name)
 
-    assert blenderObject is not None, f"Object {object_name} does not exists"
+    assert blender_object is not None, f"Object {object_name} does not exists"
 
-    return blenderObject
+    return blender_object
 
 
 def get_object_or_none(
@@ -358,9 +360,9 @@ def get_object_or_none(
     return bpy.data.objects.get(object_name)
 
 
-def get_objectType(object_name: str) -> BlenderObjectTypes:
-    blenderObject = bpy.data.objects.get(object_name)
+def get_objectType(object_name: str) -> blender_objectTypes:
+    blender_object = bpy.data.objects.get(object_name)
 
-    assert blenderObject is not None, f"Object {object_name} does not exists"
+    assert blender_object is not None, f"Object {object_name} does not exists"
 
-    return BlenderObjectTypes[blenderObject.type]
+    return blender_objectTypes[blender_object.type]

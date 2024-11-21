@@ -13,16 +13,16 @@ from providers.blender.blender_provider.blender_definitions import (
 def clear_modifiers(
     object_name: str,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    blenderObject.modifiers.clear()
+    blender_object.modifiers.clear()
 
 
 def apply_modifier(entity_name: str, modifier: BlenderModifiers, **kwargs):
-    blenderObject = get_object(entity_name)
+    blender_object = get_object(entity_name)
 
     # references https://docs.blender.org/api/current/bpy.types.BooleanModifier.html?highlight=boolean#bpy.types.BooleanModifier and https://docs.blender.org/api/current/bpy.types.ObjectModifiers.html#bpy.types.ObjectModifiers and https://docs.blender.org/api/current/bpy.types.Modifier.html#bpy.types.Modifier
-    blenderModifier = blenderObject.modifiers.new(
+    blenderModifier = blender_object.modifiers.new(
         type=modifier.name, name=modifier.name
     )
 
@@ -85,7 +85,7 @@ def apply_linear_pattern(
 def apply_circular_pattern(
     entity_name: str, instance_count, around_object_name, **kwargs
 ):
-    blenderObject = get_object(around_object_name)
+    blender_object = get_object(around_object_name)
 
     apply_modifier(
         entity_name,
@@ -93,7 +93,7 @@ def apply_circular_pattern(
         count=instance_count,
         use_relative_offset=False,
         use_object_offset=True,
-        offset_object=blenderObject,
+        offset_object=blender_object,
         **kwargs,
     )
 
@@ -125,12 +125,12 @@ def apply_boolean_modifier(
     with_mesh_object_name: str,
     **kwargs,
 ):
-    blenderObject = get_object(mesh_object_name)
+    blender_object = get_object(mesh_object_name)
     blenderBooleanObject = get_object(with_mesh_object_name)
 
     assert isinstance(
-        blenderObject.data, BlenderTypes.MESH.value
-    ), f"Object {mesh_object_name} is not an Object. Cannot use the Boolean modifier with {type(blenderObject.data)} type."
+        blender_object.data, BlenderTypes.MESH.value
+    ), f"Object {mesh_object_name} is not an Object. Cannot use the Boolean modifier with {type(blender_object.data)} type."
     assert isinstance(
         blenderBooleanObject.data, BlenderTypes.MESH.value
     ), f"Object {with_mesh_object_name} is not an Object. Cannot use the Boolean modifier with {type(blenderBooleanObject.data)} type."

@@ -956,11 +956,11 @@ def create_simple_curve(curve_primitiveType: BlenderCurvePrimitiveTypes, **kwarg
     )
 
     # Make sure an object or curve with the same name don't already exist:
-    blenderObject = bpy.data.objects.get(curve_primitiveType.name)
+    blender_object = bpy.data.objects.get(curve_primitiveType.name)
     blender_curve = bpy.data.curves.get(curve_primitiveType.name)
 
     assert (
-        blenderObject is None
+        blender_object is None
     ), f"An object with name {curve_primitiveType.name} already exists."
     assert (
         blender_curve is None

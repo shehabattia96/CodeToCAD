@@ -4,26 +4,26 @@ from providers.blender.blender_provider.blender_actions.objects import get_objec
 
 
 def create_driver(object_name: str, path: str, index=-1):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    return blenderObject.driver_add(path, index).driver
+    return blender_object.driver_add(path, index).driver
 
 
 def remove_driver(object_name: str, path: str, index=-1):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
-    blenderObject.driver_remove(path, index)
+    blender_object.driver_remove(path, index)
 
 
 def get_driver(
     object_name: str,
     path: str,
 ):
-    blenderObject = get_object(object_name)
+    blender_object = get_object(object_name)
 
     # this returns an FCurve object
     # https://docs.blender.org/api/current/bpy.types.FCurve.html
-    fcurve = blenderObject.animation_data.drivers.find(path)
+    fcurve = blender_object.animation_data.drivers.find(path)
 
     assert fcurve is not None, f"Could not find driver {path} for object {object_name}."
 

@@ -46,7 +46,7 @@ def remove_collection(name: str, scene_name: str, remove_children: bool):
 def remove_object_from_collection(
     existing_object_name: str, collection_name: str, scene_name: str
 ):
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
     collection = get_collection(collection_name, scene_name)
 
@@ -54,7 +54,7 @@ def remove_object_from_collection(
         collection.objects.get(existing_object_name) is not None
     ), f"Object {existing_object_name} does not exist in collection {collection_name}"
 
-    collection.objects.unlink(blenderObject)
+    collection.objects.unlink(blender_object)
 
 
 def assign_object_to_collection(
@@ -64,7 +64,7 @@ def assign_object_to_collection(
     remove_from_other_groups=True,
     move_children=True,
 ):
-    blenderObject = get_object(existing_object_name)
+    blender_object = get_object(existing_object_name)
 
     collection = bpy.data.collections.get(collection_name)
 
@@ -78,14 +78,14 @@ def assign_object_to_collection(
     assert collection is not None, f"Collection {collection_name} does not exist"
 
     if remove_from_other_groups:
-        currentCollections: list[bpy.types.Collection] = blenderObject.users_collection
+        currentCollections: list[bpy.types.Collection] = blender_object.users_collection
         for currentCollection in currentCollections:
-            currentCollection.objects.unlink(blenderObject)
+            currentCollection.objects.unlink(blender_object)
 
-    collection.objects.link(blenderObject)
+    collection.objects.link(blender_object)
 
     if move_children:
-        for child in blenderObject.children:
+        for child in blender_object.children:
             assign_object_to_collection(
                 child.name, collection_name, scene_name, True, True
             )
