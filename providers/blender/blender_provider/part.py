@@ -157,7 +157,6 @@ class Part(PartInterface, Entity):
         sketch = Sketch(self.name)
         circle = sketch.create_circle(radius)
         new_part = circle.revolve(180, sketch.get_landmark("center"), "x")
-        sketch.set_visible(False)
         return new_part
 
     @supported(SupportLevel.SUPPORTED)
