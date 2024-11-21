@@ -83,8 +83,9 @@ class Part(PartInterface, Entity):
 
         cube_sketch = Sketch(self.name)
         rect = cube_sketch.create_rectangle(length, width)
-        rect.extrude(height)
-        return self
+
+        cube_sketch.set_visible(False)
+        return rect.extrude(height)
 
     @supported(
         SupportLevel.PARTIAL,
@@ -96,16 +97,26 @@ class Part(PartInterface, Entity):
         height: "str|float|Dimension",
         draft_radius: "str|float|Dimension" = 0,
     ):
-        base = Sketch(self.name).create_circle(radius)
+        base_sketch = Sketch(self.name)
+        base = base_sketch.create_circle(radius)
+
+        base_sketch.set_visible(False)
+
         top = Sketch(self.name + "_temp_top")
         top_wire: WireInterface
         if draft_radius == Dimension(0):
-            top_wire = top.create_from_vertices([(0, 0, 0)])
+            # top_wire = top.create_from_vertices([(0, 0, 0)])
+            # This is temporary until the bug of lofting to a single vertex is fixed:
+            top_wire = top.create_circle(0.0001)
         else:
             top_wire = top.create_circle(draft_radius)
         top.translate_z(height)
-        base.loft(top_wire)
-        return self
+
+        new_part = base.loft(top_wire)
+
+        top.delete()
+
+        return new_part
 
     @supported(SupportLevel.SUPPORTED)
     def create_cylinder(
@@ -113,8 +124,10 @@ class Part(PartInterface, Entity):
     ):
         sketch = Sketch(self.name)
         circle = sketch.create_circle(radius)
-        circle.extrude(height)
-        return self
+
+        sketch.set_visible(False)
+
+        return circle.extrude(height)
 
     @supported(SupportLevel.SUPPORTED)
     def create_torus(
@@ -135,16 +148,17 @@ class Part(PartInterface, Entity):
         circle = sketch.create_circle(circle_radius)
         sketch.rotate_x(90)
         sketch.translate_x(inner_radius + circle_radius)
-        circle.revolve(360, origin, "z")
+        new_part = circle.revolve(360, origin, "z")
         origin.delete()
-        return self
+        return new_part
 
     @supported(SupportLevel.SUPPORTED)
     def create_sphere(self, radius: "str|float|Dimension"):
         sketch = Sketch(self.name)
         circle = sketch.create_circle(radius)
-        circle.revolve(180, sketch.get_landmark("center"), "x")
-        return self
+        new_part = circle.revolve(180, sketch.get_landmark("center"), "x")
+        sketch.set_visible(False)
+        return new_part
 
     @supported(SupportLevel.SUPPORTED)
     def create_gear(

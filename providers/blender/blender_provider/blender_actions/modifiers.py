@@ -1,6 +1,7 @@
 from codetocad.core.angle import Angle
 from codetocad.core.dimension import Dimension
 from codetocad.enums.axis import Axis
+from codetocad.interfaces.sketch_interface import SketchInterface
 from providers.blender.blender_provider.blender_actions.objects import get_object
 from providers.blender.blender_provider.blender_definitions import (
     BlenderBooleanTypes,
@@ -151,8 +152,8 @@ def apply_boolean_modifier(
 def apply_mirror_modifier(
     entity_name: str, mirror_across_entity_name: str, axis: Axis, **kwargs
 ):
-    axisList = [False, False, False]
-    axisList[axis.value] = True
+    axis_list = [False, False, False]
+    axis_list[axis.value] = True
 
     blender_mirror_across_object = get_object(mirror_across_entity_name)
 
@@ -160,7 +161,7 @@ def apply_mirror_modifier(
         entity_name,
         BlenderModifiers.MIRROR,
         mirror_object=blender_mirror_across_object,
-        use_axis=axisList,
+        use_axis=axis_list,
         use_mirror_merge=False,
         **kwargs,
     )

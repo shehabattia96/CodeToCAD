@@ -1,4 +1,5 @@
 from codetocad import *
+from codetocad.interfaces.part_interface import PartInterface
 from examples.d_shaft import DShaft
 
 
