@@ -9,6 +9,8 @@ def build_blender_subprocess_args(launcher_args: LauncherArgs):
     blender myscene.blend --background -- --codetocad $(pwd)/yourScript.py
 
     from LauncherArgs
+
+    References https://docs.blender.org/manual/en/latest/advanced/command_line/arguments.html#python-options
     """
 
     args = [launcher_args.launcher_location or launcher_args.launcher]
