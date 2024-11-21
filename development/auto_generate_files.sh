@@ -21,3 +21,5 @@ fi
 cd "$SCRIPT_DIR/.."
 
 python -m development.capabilities_json_to_python.capabilities_to_py
+python -m development.capabilities_json_to_python.capabilities_to_html_docs
+python -m development.examples_json_to_html.examples_to_html

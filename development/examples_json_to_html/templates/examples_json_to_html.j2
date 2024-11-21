@@ -147,10 +147,36 @@
             display: block;
             word-wrap: break-word;
         }
+
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #scrollToTopBtn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
 <body>
+
+    <button id="scrollToTopBtn" onclick="scrollToTop()">▲</button>
 
     {# MARK: Header: #}
     <header>
@@ -191,7 +217,8 @@
             {%-endif%}
             
             {% if "imagePath" in example and example["imagePath"]|length > 0 -%}
-            <img src=' {{example["imagePath"]}}' alt="Image" />
+            <img src=' https://raw.githubusercontent.com/CodeToCAD/CodeToCAD/develop/examples/{{example["imagePath"]}}'
+                alt="Image" />
             {%-endif%}
             <pre>
             {{example["code"]}}
@@ -202,6 +229,17 @@
 
     {% endfor -%}
     </div>
+
+    <script>
+
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 
 </body>
 
