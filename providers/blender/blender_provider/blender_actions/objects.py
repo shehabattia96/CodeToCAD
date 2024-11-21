@@ -137,28 +137,28 @@ def create_gear(
         addon is not None
     ), f"Could not enable the {addon_name} addon to create extra objects"
 
-    outer_radiusDimension = BlenderLength.convert_dimension_to_blender_unit(
+    outer_radius_dimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(outer_radius)
     ).value
-    inner_radiusDimension = BlenderLength.convert_dimension_to_blender_unit(
+    inner_radius_dimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(inner_radius)
     ).value
-    addendumDimension = BlenderLength.convert_dimension_to_blender_unit(
+    addendum_dimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(addendum)
     ).value
-    dedendumDimension = BlenderLength.convert_dimension_to_blender_unit(
+    dedendum_dimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(dedendum)
     ).value
     heightDimension = BlenderLength.convert_dimension_to_blender_unit(
         Dimension.from_string(height)
     ).value
 
-    if addendumDimension > outer_radiusDimension / 2:
-        addendumDimension = outer_radiusDimension / 2
-    if inner_radiusDimension > outer_radiusDimension:
-        inner_radiusDimension = outer_radiusDimension
-    if dedendumDimension + inner_radiusDimension > outer_radiusDimension:
-        dedendumDimension = outer_radiusDimension - inner_radiusDimension
+    if addendum_dimension > outer_radius_dimension / 2:
+        addendum_dimension = outer_radius_dimension / 2
+    if inner_radius_dimension > outer_radius_dimension:
+        inner_radius_dimension = outer_radius_dimension
+    if dedendum_dimension + inner_radius_dimension > outer_radius_dimension:
+        dedendum_dimension = outer_radius_dimension - inner_radius_dimension
 
     pressure_angleValue = Angle.from_string(pressure_angle).to_radians().value
     skew_angleValue = Angle.from_string(skew_angle).to_radians().value
@@ -168,11 +168,11 @@ def create_gear(
     return bpy.ops.mesh.primitive_gear(
         name=object_name,
         number_of_teeth=number_of_teeth,
-        radius=outer_radiusDimension,
-        addendum=addendumDimension,
-        dedendum=dedendumDimension,
+        radius=outer_radius_dimension,
+        addendum=addendum_dimension,
+        dedendum=dedendum_dimension,
         angle=pressure_angleValue,
-        base=inner_radiusDimension,
+        base=inner_radius_dimension,
         width=heightDimension,
         skew=skew_angleValue,
         conangle=conical_angleValue,
@@ -185,9 +185,9 @@ def make_parent(
     parent_name: str,
 ):
     blender_object = get_object(name)
-    blenderParentObject = get_object(parent_name)
+    blender_parent_object = get_object(parent_name)
 
-    blender_object.parent = blenderParentObject
+    blender_object.parent = blender_parent_object
 
 
 def update_object_name(

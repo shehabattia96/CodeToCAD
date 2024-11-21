@@ -67,9 +67,9 @@ def apply_bevel_modifier(
 def apply_linear_pattern(
     entity_name: str, instance_count, direction: Axis, offset: float, **kwargs
 ):
-    offsetArray = [0.0, 0.0, 0.0]
+    offset_array = [0.0, 0.0, 0.0]
 
-    offsetArray[direction.value] = offset
+    offset_array[direction.value] = offset
 
     apply_modifier(
         entity_name,
@@ -77,7 +77,7 @@ def apply_linear_pattern(
         use_relative_offset=False,
         count=instance_count,
         use_constant_offset=True,
-        constant_offset_displace=offsetArray,
+        constant_offset_displace=offset_array,
         **kwargs,
     )
 
@@ -126,20 +126,20 @@ def apply_boolean_modifier(
     **kwargs,
 ):
     blender_object = get_object(mesh_object_name)
-    blenderBooleanObject = get_object(with_mesh_object_name)
+    blender_boolean_object = get_object(with_mesh_object_name)
 
     assert isinstance(
         blender_object.data, BlenderTypes.MESH.value
     ), f"Object {mesh_object_name} is not an Object. Cannot use the Boolean modifier with {type(blender_object.data)} type."
     assert isinstance(
-        blenderBooleanObject.data, BlenderTypes.MESH.value
-    ), f"Object {with_mesh_object_name} is not an Object. Cannot use the Boolean modifier with {type(blenderBooleanObject.data)} type."
+        blender_boolean_object.data, BlenderTypes.MESH.value
+    ), f"Object {with_mesh_object_name} is not an Object. Cannot use the Boolean modifier with {type(blender_boolean_object.data)} type."
 
     apply_modifier(
         mesh_object_name,
         BlenderModifiers.BOOLEAN,
         operation=blender_boolean_type.name,
-        object=blenderBooleanObject,
+        object=blender_boolean_object,
         use_self=True,
         use_hole_tolerant=True,
         # "solver= "EXACT",
@@ -154,12 +154,12 @@ def apply_mirror_modifier(
     axisList = [False, False, False]
     axisList[axis.value] = True
 
-    blenderMirrorAcrossObject = get_object(mirror_across_entity_name)
+    blender_mirror_across_object = get_object(mirror_across_entity_name)
 
     apply_modifier(
         entity_name,
         BlenderModifiers.MIRROR,
-        mirror_object=blenderMirrorAcrossObject,
+        mirror_object=blender_mirror_across_object,
         use_axis=axisList,
         use_mirror_merge=False,
         **kwargs,
@@ -172,7 +172,7 @@ def apply_screw_modifier(
     axis: Axis,
     screw_pitch: Dimension = Dimension(0),
     iterations=1,
-    entity_nameToDetermineAxis=None,
+    entity_name_to_determine_axis=None,
     resolution=16,
     **kwargs,
 ):
@@ -189,9 +189,9 @@ def apply_screw_modifier(
         "iterations": iterations,
     }
 
-    if entity_nameToDetermineAxis:
-        blenderMirrorAcrossObject = get_object(entity_nameToDetermineAxis)
+    if entity_name_to_determine_axis:
+        blender_mirror_across_object = get_object(entity_name_to_determine_axis)
 
-        properties["object"] = blenderMirrorAcrossObject
+        properties["object"] = blender_mirror_across_object
 
     apply_modifier(entity_name, BlenderModifiers.SCREW, **properties, **kwargs)

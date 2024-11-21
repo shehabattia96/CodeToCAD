@@ -270,7 +270,7 @@ class Wire(WireInterface, Entity):
             parent.name,
             Angle.from_string(angle).to_radians(),
             axis,
-            entity_nameToDetermineAxis=about_entity_or_landmark,
+            entity_name_to_determine_axis=about_entity_or_landmark,
         )
         create_mesh_from_curve(parent.name)
         # Recalculate normals because they're usually wrong after revolving.

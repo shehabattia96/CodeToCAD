@@ -8,12 +8,12 @@ import bpy
 
 
 def convert_object_using_ops(existing_object_name: str, convert_to_type: BlenderTypes):
-    existingObject = get_object(existing_object_name)
+    existing_object = get_object(existing_object_name)
     with get_context_view_3d(
-        active_object=existingObject, selected_objects=[existingObject]
+        active_object=existing_object, selected_objects=[existing_object]
     ):
-        existingObject.select_set(True)
-        bpy.context.view_layer.objects.active = existingObject
+        existing_object.select_set(True)
+        bpy.context.view_layer.objects.active = existing_object
         update_view_layer()
 
         bpy.ops.object.convert(target=convert_to_type.name)
