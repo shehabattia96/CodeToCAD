@@ -349,10 +349,10 @@
         <div>
             <label for="version-select">Select Version:</label>
             <select id="version-select" onchange="location = this.value;">
-                <option value="/CodeToCAD/docs/docs.html" {% if selected_doc == 'docs/docs.html' %}selected{% endif %}>Latest Release</option>
-                <option value="/CodeToCAD/docs/develop/docs.html" {% if selected_doc == 'docs/develop/docs.html' %}selected{% endif %}>Development</option>
+                <option value="/CodeToCAD/docs.html" {% if selected_doc == 'docs/docs.html' %}selected{% endif %}>Latest Release</option>
+                <option value="/CodeToCAD/develop/docs.html" {% if selected_doc == 'docs/develop/docs.html' %}selected{% endif %}>Development</option>
                 {% for epoch in epochs %}
-                <option value="/CodeToCAD/docs/release/{{epoch}}.html" {% if selected_doc == 'docs/release/' + epoch + '.html' %}selected{% endif %}>{{epoch}}</option>
+                <option value="/CodeToCAD/release/{{epoch}}.html" {% if selected_doc == 'docs/release/' + epoch + '.html' %}selected{% endif %}>{{epoch}}</option>
                 {% endfor %}
             </select>
         </div>
