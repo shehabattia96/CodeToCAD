@@ -1,6 +1,6 @@
 # Development & Contributing
 
-## Setting up development environment.
+## Setting Up Your Development Environment
 
 1. Please install the VSCode python virtual environment using
    `sh development/create_python_virtual_environment.sh`
