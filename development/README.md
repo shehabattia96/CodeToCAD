@@ -8,13 +8,19 @@
    `sh development/create_python_virtual_environment.sh /path/to/python_binary`.
 
 > If you are on Windows, please use Git Bash.
-> Note: Python 3.10+ is required.
+> Note: Python 3.11+ is required.
 > Note 2: It might be a good idea to restart VSCode after installing the virtual environment.
-> Note 3: If VSCode prompts you, please use the interpreter under `development/developmentVirtualEnvironment`.
+> Note 3: If VSCode prompts you, please use the interpreter under `development/dev_virtual_environment`.
 
-2. It's good practice to run tests and linting before committing. Please run `sh ./development/install_git_hooks.sh` to instll Git Hooks.
+2. Generate interface and sample provider files:
 
-3. Read the README for each provider for information on setting them up:
+```sh
+sh development/auto_generate_files.sh
+```
+
+3. It's good practice to run tests and linting before committing. Please run `sh ./development/install_git_hooks.sh` to instll Git Hooks.
+
+4. Read the README for each provider for information on setting them up:
    - Blender: [providers/blender/README.md](../providers/blender/README.md)
    - Fusion360: [providers/fusion360/README.md](../providers/fusion360/README.md)
    - Onshape: [providers/onshape/README.md](../providers/onshape/README.md)
@@ -60,10 +66,3 @@ If you would like to contribute to the project, please feel free to submit a PR.
 
 Please join the Discord Server if you have any questions or suggestions: [https://discord.gg/MnZEtqwt74](https://discord.gg/MnZEtqwt74)
 
-## Setting Up Your Local Development Environment
-
-To set up your local development environment, you can run the following script to automatically generate necessary files:
-
-```sh
-sh development/auto_generate_files.sh
-```
