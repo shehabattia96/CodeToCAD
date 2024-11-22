@@ -29,7 +29,6 @@ for class_name in class_names:
     # Convert class name to snake case for the file name
     snake_case_name = to_snake_case(class_name)
     test_runner_file_path = os.path.join(output_dir, f'test_run_{snake_case_name}.py')
-    
     with open(test_runner_file_path, 'w') as test_file:
         test_file.write(f"""import unittest
 import tests.test_providers.sample_implemented as sample_implemented
