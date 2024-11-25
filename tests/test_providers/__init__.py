@@ -1,8 +1,3 @@
-"""
-
-"""
-
-import inspect
 import unittest
 from codetocad.providers import get_provider
 
@@ -11,7 +6,9 @@ from codetocad.codetocad_types import *
 
 
 class TestProviderCase(unittest.TestCase):
+
     def setUp(self) -> None:
+        print(f"\nRunning test: {self._testMethodName}")
 
         # Check if the interface is already injected into providers
         # otherwise, use the sample provider

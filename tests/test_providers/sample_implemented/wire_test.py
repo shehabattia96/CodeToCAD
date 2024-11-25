@@ -245,9 +245,7 @@ class WireTest(TestProviderCase, WireTestInterface):
         )
 
         value = instance.create_line(
-            length=Dimension(0, "mm"),
-            angle=Angle(90),
-            start_at="PresetLandmark.end"
+            length=Dimension(0, "mm"), angle=Angle(90), start_at="PresetLandmark.end"
         )
 
         assert value, "Modify method failed."
@@ -274,7 +272,7 @@ class WireTest(TestProviderCase, WireTestInterface):
 
         value = instance.create_line_to(
             to=["Point.from_list_of_float_or_string([0,0,0])"],
-            start_at="PresetLandmark.end"
+            start_at="PresetLandmark.end",
         )
 
         assert value, "Modify method failed."
@@ -303,7 +301,7 @@ class WireTest(TestProviderCase, WireTestInterface):
             end_at=Point.from_list_of_float_or_string([0, 0, 0]),
             radius=Dimension(0, "mm"),
             start_at="PresetLandmark.end",
-            flip=False
+            flip=False,
         )
 
         assert value, "Modify method failed."
