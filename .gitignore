@@ -25,4 +25,4 @@ codetocad/tests_interfaces
 providers/sample
 tests/test_providers/sample
 
-docs/*html 
+docs/*.html 

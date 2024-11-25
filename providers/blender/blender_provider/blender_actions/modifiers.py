@@ -1,7 +1,6 @@
 from codetocad.core.angle import Angle
 from codetocad.core.dimension import Dimension
 from codetocad.enums.axis import Axis
-from codetocad.interfaces.sketch_interface import SketchInterface
 from providers.blender.blender_provider.blender_actions.objects import get_object
 from providers.blender.blender_provider.blender_definitions import (
     BlenderBooleanTypes,
