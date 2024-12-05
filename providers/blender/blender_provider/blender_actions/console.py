@@ -44,15 +44,12 @@ def start_debugger(host: str = "localhost", port: int = 5678, wait_to_connect:bo
 
     try:
         debugpy.listen((host, port))
-        
-        if wait_to_connect:
-            debugpy.wait_for_client()
-        write_to_console(
+        print(
             f"debugpy server has started on {host}:{port}. You may connect to it by attaching your IDE's debugger to a remote debugger at {host}:{port}.",
             "OUTPUT",
         )
     except (Exception, RuntimeError) as e:
-        write_to_console(f"Cannot start the debugger server: {e}", "ERROR")
+        print(f"Cannot start the debugger server: {e}", "ERROR")
 
 
 def reload_codetocad_modules():
@@ -89,20 +86,24 @@ def write_to_console(message: str, text_type: str = "INFO"):
     text_type is one of ('OUTPUT', 'INPUT', 'INFO', 'ERROR')
     """
     # References https://blender.stackexchange.com/a/78332
-    area, space, region = console_get()
-
-    context_override = bpy.context.copy()
-    context_override.update(
-        {
-            "space": space,
-            "area": area,
-            "region": region,
-        }
-    )
-    print(message)
-    with bpy.context.temp_override(**context_override):
-        for line in message.split("\n"):
-            bpy.ops.console.scrollback_append(text=line, type=text_type)
+    try:
+      area, space, region = console_get()
+  
+      context_override = bpy.context.copy()
+      context_override.update(
+          {
+              "space": space,
+              "area": area,
+              "region": region,
+          }
+      )
+      print(message)
+      with bpy.context.temp_override(**context_override):
+          for line in message.split("\n"):
+              bpy.ops.console.scrollback_append(text=line, type=text_type)
+    except:
+      print("Warning: Console could not be found, could be running headless.")
+      print(f"{text_type}: {message}")
 
 
 def console_get():
