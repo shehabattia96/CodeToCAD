@@ -32,7 +32,7 @@ def install_debugpy(uninstall: bool = False):
     subprocess.call([python, "-m", "pip", "install", "--user", "debugpy"])
 
 
-def start_debugger(host: str = "localhost", port: int = 5678):
+def start_debugger(host: str = "localhost", port: int = 5678, wait_to_connect:bool = False):
     try:
         add_user_site_packages_to_path()
         import debugpy
@@ -40,10 +40,11 @@ def start_debugger(host: str = "localhost", port: int = 5678):
         print("debugpy is not installed, will try to auto-install.", e)
         install_debugpy()
         __import__("time").sleep(5)
-        return start_debugger(host, port)
+        return start_debugger(host, port, wait_to_connect)
 
     try:
-        debugpy.listen((host, port))
+        if wait_to_connect:
+            debugpy.wait_for_client()
         write_to_console(
             f"debugpy server has started on {host}:{port}. You may connect to it by attaching your IDE's debugger to a remote debugger at {host}:{port}.",
             "OUTPUT",
@@ -86,20 +87,24 @@ def write_to_console(message: str, text_type: str = "INFO"):
     text_type is one of ('OUTPUT', 'INPUT', 'INFO', 'ERROR')
     """
     # References https://blender.stackexchange.com/a/78332
-    area, space, region = console_get()
-
-    context_override = bpy.context.copy()
-    context_override.update(
-        {
-            "space": space,
-            "area": area,
-            "region": region,
-        }
-    )
-    print(message)
-    with bpy.context.temp_override(**context_override):
-        for line in message.split("\n"):
-            bpy.ops.console.scrollback_append(text=line, type=text_type)
+    try:
+      area, space, region = console_get()
+  
+      context_override = bpy.context.copy()
+      context_override.update(
+          {
+              "space": space,
+              "area": area,
+              "region": region,
+          }
+      )
+      print(message)
+      with bpy.context.temp_override(**context_override):
+          for line in message.split("\n"):
+              bpy.ops.console.scrollback_append(text=line, type=text_type)
+    except:
+      print("Warning: Console could not be found, could be running headless.")
+      print(f"{text_type}: {message}")
 
 
 def console_get():
