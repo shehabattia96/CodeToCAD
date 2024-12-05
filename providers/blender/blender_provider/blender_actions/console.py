@@ -43,13 +43,14 @@ def start_debugger(host: str = "localhost", port: int = 5678, wait_to_connect:bo
         return start_debugger(host, port, wait_to_connect)
 
     try:
-        debugpy.listen((host, port))
-        print(
+        if wait_to_connect:
+            debugpy.wait_for_client()
+        write_to_console(
             f"debugpy server has started on {host}:{port}. You may connect to it by attaching your IDE's debugger to a remote debugger at {host}:{port}.",
             "OUTPUT",
         )
     except (Exception, RuntimeError) as e:
-        print(f"Cannot start the debugger server: {e}", "ERROR")
+        write_to_console(f"Cannot start the debugger server: {e}", "ERROR")
 
 
 def reload_codetocad_modules():
