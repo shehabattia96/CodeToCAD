@@ -558,6 +558,9 @@ def run_from_commandline_arguments(*args):
 
             directory = str(Path(filepath).parent)
 
+            print("Waiting for debugger to attach")
+            start_debugger(host = "localhost", port = 5678, wait_to_connect=True)
+
             import_codetocad_file(filepath, directory, directory)
 
             break

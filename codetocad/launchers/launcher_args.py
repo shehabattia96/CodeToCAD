@@ -32,6 +32,8 @@ class LauncherArgs:
     background: Optional[bool] = None
     document_name: Optional[str] = None
     config_file_path: Optional[str] = None
+    debug: Optional[bool] = False  # Add debug field
+
 
     @staticmethod
     def get_sample_launcher_name():
@@ -113,6 +115,12 @@ codetocad /path/to/script ...args => runs a codetocad script
             help="specify the path to a config file to be read by the launcher",
         )
 
+        parser.add_argument(
+            "--debug",
+            action="store_false",
+            help="enable debug mode for additional logging and information",
+        )
+
         args = parser.parse_args()
 
         return LauncherArgs(
@@ -126,4 +134,5 @@ codetocad /path/to/script ...args => runs a codetocad script
             background=args.background,
             document_name=args.document_name,
             config_file_path=args.config_file_path,
+            debug=args.debug,
         )
