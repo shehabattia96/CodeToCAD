@@ -1,12 +1,6 @@
 import json
 import os
 import unittest
-import sys
-
-# Add the project root directory to Python path
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-sys.path.insert(0, project_root)
-
 from providers.onshape import *
 from providers.onshape.onshape_provider import *
 from providers.onshape.onshape_provider.onshape_actions import *
