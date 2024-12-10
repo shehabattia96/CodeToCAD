@@ -2,6 +2,8 @@ from dataclasses import asdict, dataclass
 import argparse
 from enum import Enum
 from typing import Optional
+import json
+from pathlib import Path
 
 from codetocad.utilities import get_absolute_filepath
 
@@ -57,7 +59,14 @@ class LauncherArgs:
         del args["launcher"]
         del args["launcher_location"]
 
-        args_list = [self.launcher_location or self.launcher]
+        # Read config to get launcher path if not explicitly provided
+        if not self.launcher_location:
+            config = self.read_config()
+            launcher_config = config.get(self.launcher.lower(), {})
+            launcher_path = launcher_config.get("path")
+            args_list = [launcher_path or self.launcher]
+        else:
+            args_list = [self.launcher_location]
 
         for key, value in args.items():
             args_list.append(f"--{key}")
@@ -117,7 +126,7 @@ codetocad /path/to/script ...args => runs a codetocad script
 
         parser.add_argument(
             "--debug",
-            action="store_false",
+            action="store_true",
             help="enable debug mode for additional logging and information",
         )
 
@@ -136,3 +145,21 @@ codetocad /path/to/script ...args => runs a codetocad script
             config_file_path=args.config_file_path,
             debug=args.debug,
         )
+    
+    def get_config_path(self):
+        return Path.home() / ".codetocad/config.json"
+
+    def read_config(self):
+        config_path = self.get_config_path()
+        if config_path.exists():
+            with config_path.open("r") as file:
+                config = json.load(file)
+        else:
+            config = {}
+
+        return config
+
+    def write_config(self, config): 
+        config_path = self.get_config_path()
+        with config_path.open("w") as file:
+            json.dump(config, file, indent=4)
