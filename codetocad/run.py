@@ -2,7 +2,7 @@ from codetocad.launchers.blender import run_blender_process
 from codetocad.launchers.launcher_args import CliActions, LauncherArgs
 from codetocad.launchers.sample import run_with_sample
 from codetocad.launchers.unknown_launcher import run_unknown_process
-
+from codetocad.launchers.onshape import run_onshape
 
 import os
 import sys
@@ -28,6 +28,15 @@ def execute_launcher():
     Builds a LauncherArgs instance from cli args, then attempts to run known launchers, and if it fails to do that, runs an unknown process.
     """
     args = LauncherArgs.from_cli_args()
+
+    print("LauncherArgs values:")
+    print(f"  script_file_path_or_action: {args.script_file_path_or_action}")
+    print(f"  launcher: {args.launcher}")
+    print(f"  launcher_location: {args.launcher_location}")
+    print(f"  background: {args.background}")
+    print(f"  document_name: {args.document_name}")
+    print(f"  config_file_path: {args.config_file_path}")
+    print(f"  debug: {args.debug}")
 
     action = CliActions.get_action_from_string(args.script_file_path_or_action)
 
@@ -55,6 +64,8 @@ See https://github.com/CodeToCAD/CodeToCAD/README.md for more information.
     # Known launchers:
     if launcher_lower == "blender":
         return run_blender_process(args)
+    if launcher_lower == "onshape":
+        return run_onshape(args)
 
     # Execute an unknown process:
     run_unknown_process(args)
