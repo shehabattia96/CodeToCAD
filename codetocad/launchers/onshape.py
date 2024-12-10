@@ -1,13 +1,13 @@
+
 import os
 import sys
 import subprocess
 from pathlib import Path
-import runpy
 
 from codetocad.launchers.launcher_args import LauncherArgs
 from providers.sample import register
 
-def run_with_sample(launcher_args: LauncherArgs):
+def run_onshape(launcher_args: LauncherArgs):
     """
     Launches the script with the providers.sample module.
     """
@@ -20,10 +20,7 @@ def run_with_sample(launcher_args: LauncherArgs):
     sys.path.append(directory)
 
     python = os.path.abspath(sys.executable)
-    
-    if launcher_args.debug:
-      return subprocess.call(
-          [python, "-m", "debugpy", "--listen", "5678", "--wait-for-client",  filepath]
-      )
 
-    return runpy.run_path(filepath, run_name="__main__")
+    return subprocess.call(
+          [python, "-m", "debugpy", "--listen", "5678", "--wait-for-client",  filepath]
+    )
