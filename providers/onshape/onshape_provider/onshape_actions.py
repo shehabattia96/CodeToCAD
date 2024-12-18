@@ -1,5 +1,3 @@
-from calendar import c
-from turtle import distance
 from typing import Optional
 from onpy import Client
 import onpy.entities
