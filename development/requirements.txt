@@ -17,6 +17,7 @@ numpy
 
 # Onshape Dev Dependencies:
 onshape-client
+onpy
 
 # Fusion 360 Dev Dependencies:
 ../providers/fusion360/fusion360_api_fake
